@@ -76,11 +76,12 @@ const SocialStyleGraph: React.FC<SocialStyleGraphProps> = ({
         // Create a safe identifier that avoids Mermaid reserved words
         const safeId = `Participant_${index + 1}`;
         
-        // Use the original name for display but safe ID for Mermaid
-        const displayName = participantName || `Participant ${index + 1}`;
+        // Format coordinates, converting 1.00 to 1
+        const xFormatted = x === 1 ? '1' : x.toFixed(2);
+        const yFormatted = y === 1 ? '1' : y.toFixed(2);
         
         // Simple data point without complex styling
-        mermaidCode += `\n    ${safeId}: [${x.toFixed(2)}, ${y.toFixed(2)}]`;
+        mermaidCode += `\n    ${safeId}: [${xFormatted}, ${yFormatted}]`;
       });
 
       return mermaidCode;
@@ -192,4 +193,4 @@ const SocialStyleGraph: React.FC<SocialStyleGraphProps> = ({
   );
 };
 
-export default SocialStyleGraph; 
+export default SocialStyleGraph;
