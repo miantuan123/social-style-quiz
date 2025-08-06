@@ -5,16 +5,16 @@ import type { SessionData } from '../types';
 import { Share2, Home } from 'lucide-react';
 
 const ResultsPage: React.FC = () => {
-  const { sessionCode } = useParams<{ sessionCode: string }>();
+  const { submissionId } = useParams<{ submissionId: string }>();
   const location = useLocation();
   const navigate = useNavigate();
-  const { name, result } = location.state || {};
+  const { name, result, sessionCode } = location.state || {};
   
   const [sessionData, setSessionData] = useState<SessionData | null>(null);
   const [showShareModal, setShowShareModal] = useState(false);
 
   useEffect(() => {
-    if (!sessionCode) {
+    if (!submissionId || !sessionCode) {
       navigate('/');
       return;
     }
@@ -24,10 +24,10 @@ const ResultsPage: React.FC = () => {
     });
 
     return () => unsubscribe();
-  }, [sessionCode, navigate]);
+  }, [submissionId, sessionCode, navigate]);
 
   const handleShare = async () => {
-    const url = `${window.location.origin}/results/${sessionCode}`;
+    const url = `${window.location.origin}/results/${submissionId}`;
     
     if (navigator.share) {
       try {
@@ -218,7 +218,7 @@ const ResultsPage: React.FC = () => {
               Share this link with others to view the session results:
             </p>
             <div className="bg-gray-100 p-3 rounded-lg mb-4 break-all text-sm">
-              {`${window.location.origin}/results/${sessionCode}`}
+              {`${window.location.origin}/results/${submissionId}`}
             </div>
             <div className="flex space-x-3">
               <button

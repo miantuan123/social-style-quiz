@@ -4,7 +4,9 @@ import {
   query, 
   where, 
   onSnapshot, 
-  orderBy
+  orderBy,
+  doc,
+  getDoc
 } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import type { Submission, SessionData } from '../types';
@@ -29,6 +31,24 @@ export async function createSubmission(
   return docRef.id;
 }
 
+export async function getSubmissionById(submissionId: string): Promise<Submission | null> {
+  const docRef = doc(db, 'submissions', submissionId);
+  const docSnap = await getDoc(docRef);
+  
+  if (docSnap.exists()) {
+    const data = docSnap.data();
+    return {
+      id: docSnap.id,
+      session_code: data.session_code,
+      name: data.name,
+      questions_answers: data.questions_answers,
+      social_style: data.social_style,
+      created_at: data.created_at?.toDate() || new Date()
+    };
+  }
+  return null;
+}
+
 export function subscribeToSession(
   sessionCode: string, 
   callback: (data: SessionData) => void
@@ -42,10 +62,10 @@ export function subscribeToSession(
   return onSnapshot(q, (snapshot) => {
     const submissions: Submission[] = [];
     
-    snapshot.forEach((doc) => {
-      const data = doc.data();
+    snapshot.forEach((docSnapshot) => {
+      const data = docSnapshot.data();
       submissions.push({
-        id: doc.id,
+        id: docSnapshot.id,
         session_code: data.session_code,
         name: data.name,
         questions_answers: data.questions_answers,
@@ -63,5 +83,7 @@ export function subscribeToSession(
     };
     
     callback(sessionData);
+  }, (error) => {
+    console.error('Error listening to session:', error);
   });
 } 

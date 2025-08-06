@@ -48,14 +48,15 @@ const QuizPage: React.FC = () => {
 
     setIsSubmitting(true);
     try {
-      await createSubmission(sessionCode!, name, answers);
+      const submissionId = await createSubmission(sessionCode!, name, answers);
       const result = calculateQuizResult(answers);
-      navigate(`/results/${sessionCode}`, { 
+      navigate(`/results/${submissionId}`, { 
         state: { 
           name, 
           sessionCode, 
           result,
-          answers 
+          answers,
+          submissionId
         } 
       });
     } catch (error) {
