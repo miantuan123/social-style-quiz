@@ -1,44 +1,63 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { subscribeToSession } from '../services/firebaseService';
-import type { SessionData } from '../types';
-import { Share2, Home } from 'lucide-react';
-import SocialStyleGraph from './SocialStyleGraph';
+import React, { useState, useEffect, useRef } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { subscribeToSession } from "../services/firebaseService";
+import type { SessionData } from "../types";
+import { Share2, Home } from "lucide-react";
+import SocialStyleGraph from "./SocialStyleGraph";
+import QRCode from "qrcode";
 
 const SessionPage: React.FC = () => {
   const { sessionCode } = useParams<{ sessionCode: string }>();
   const navigate = useNavigate();
-  
+  const qrCodeRef = useRef<HTMLCanvasElement>(null);
+
   const [sessionData, setSessionData] = useState<SessionData | null>(null);
   const [showShareModal, setShowShareModal] = useState(false);
 
   useEffect(() => {
     if (!sessionCode) {
-      navigate('/');
+      navigate("/");
       return;
     }
 
     console.log(`Setting up listener for session: ${sessionCode}`);
     const unsubscribe = subscribeToSession(sessionCode, (data) => {
-      console.log(`SessionPage received data for session ${sessionCode}:`, data);
+      console.log(
+        `SessionPage received data for session ${sessionCode}:`,
+        data
+      );
       setSessionData(data);
     });
 
     return () => unsubscribe();
   }, [sessionCode, navigate]);
 
+  useEffect(() => {
+    if (qrCodeRef.current) {
+      const url = `${window.location.origin}`;
+      QRCode.toCanvas(qrCodeRef.current, url, {
+        width: 160,
+        margin: 2,
+        color: {
+          dark: "#000000",
+          light: "#ffffff",
+        },
+      });
+    }
+  }, []);
+
   const handleShare = async () => {
     const url = `${window.location.origin}/session/${sessionCode}`;
-    
+
     if (navigator.share) {
       try {
         await navigator.share({
-          title: 'Social Style Quiz Session',
+          title: "Social Style Quiz Session",
           text: `Join our Social Style Quiz session: ${sessionCode}`,
-          url: url
+          url: url,
         });
       } catch (error) {
-        console.log('Error sharing:', error);
+        console.log("Error sharing:", error);
       }
     } else {
       setShowShareModal(true);
@@ -49,10 +68,10 @@ const SessionPage: React.FC = () => {
     const url = `${window.location.origin}/session/${sessionCode}`;
     try {
       await navigator.clipboard.writeText(url);
-      alert('Link copied to clipboard!');
+      alert("Link copied to clipboard!");
       setShowShareModal(false);
     } catch (error) {
-      console.error('Failed to copy:', error);
+      console.error("Failed to copy:", error);
     }
   };
 
@@ -63,31 +82,37 @@ const SessionPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
       <div className="max-w-4xl mx-auto">
-        {/* Header */}
+        {/* Header with buttons below title */}
         <div className="bg-white rounded-2xl shadow-xl p-6 mb-6">
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Session Results</h1>
+          <div className="flex space-x-3 mb-6">
+            <button
+              onClick={handleShare}
+              className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              <Share2 className="w-4 h-4 mr-2" />
+              Share Session
+            </button>
+            <button
+              onClick={() => navigate('/')}
+              className="flex items-center px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
+            >
+              <Home className="w-4 h-4 mr-2" />
+              Home
+            </button>
+          </div>
+
+          {/* Session info and QR code */}
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Session Results</h1>
               <p className="text-gray-600">Session Code: {sessionCode}</p>
               <p className="text-sm text-gray-500">
                 {sessionData?.submissions.length || 0} participants
               </p>
             </div>
-            <div className="flex space-x-3">
-              <button
-                onClick={handleShare}
-                className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-              >
-                <Share2 className="w-4 h-4 mr-2" />
-                Share Session
-              </button>
-              <button
-                onClick={() => navigate('/')}
-                className="flex items-center px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
-              >
-                <Home className="w-4 h-4 mr-2" />
-                Home
-              </button>
+            <div className="flex flex-col items-center">
+              <canvas ref={qrCodeRef} className="mb-2" />
+              <p className="text-sm text-gray-600">Scan to join</p>
             </div>
           </div>
         </div>
@@ -95,7 +120,7 @@ const SessionPage: React.FC = () => {
         {/* Live Results Graph */}
         <div className="bg-white rounded-2xl shadow-xl p-6 mb-6">
           <h2 className="text-xl font-bold text-gray-900 mb-4">Live Results</h2>
-          <SocialStyleGraph 
+          <SocialStyleGraph
             results={sessionData?.results || []}
             submissions={sessionData?.submissions || []}
           />
@@ -104,16 +129,26 @@ const SessionPage: React.FC = () => {
         {/* Participants List */}
         {sessionData && sessionData.submissions.length > 0 && (
           <div className="bg-white rounded-2xl shadow-xl p-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Participants ({sessionData.submissions.length})</h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-4">
+              Participants ({sessionData.submissions.length})
+            </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
               {sessionData.submissions.map((submission, index) => {
                 const subResult = sessionData.results[index];
                 return (
-                  <div key={submission.id} className="bg-gray-50 p-4 rounded-lg">
-                    <div className="font-medium text-gray-900">{submission.name}</div>
-                    <div className="text-sm text-blue-600">{subResult.socialStyle}</div>
+                  <div
+                    key={submission.id}
+                    className="bg-gray-50 p-4 rounded-lg"
+                  >
+                    <div className="font-medium text-gray-900">
+                      {submission.name}
+                    </div>
+                    <div className="text-sm text-blue-600">
+                      {subResult.socialStyle}
+                    </div>
                     <div className="text-xs text-gray-500 mt-1">
-                      A:{subResult.firstHalf.a} B:{subResult.firstHalf.b} | C:{subResult.secondHalf.c} D:{subResult.secondHalf.d}
+                      A:{subResult.firstHalf.a} B:{subResult.firstHalf.b} | C:
+                      {subResult.secondHalf.c} D:{subResult.secondHalf.d}
                     </div>
                   </div>
                 );
@@ -121,15 +156,15 @@ const SessionPage: React.FC = () => {
             </div>
           </div>
         )}
-
-
       </div>
 
       {/* Share Modal */}
       {showShareModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-2xl p-6 max-w-md w-full">
-            <h3 className="text-lg font-bold text-gray-900 mb-4">Share Session</h3>
+            <h3 className="text-lg font-bold text-gray-900 mb-4">
+              Share Session
+            </h3>
             <p className="text-gray-600 mb-4">
               Share this link with others to join the session:
             </p>
@@ -157,4 +192,4 @@ const SessionPage: React.FC = () => {
   );
 };
 
-export default SessionPage; 
+export default SessionPage;
