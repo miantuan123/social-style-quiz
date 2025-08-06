@@ -4,7 +4,6 @@ import {
   query, 
   where, 
   onSnapshot, 
-  orderBy,
   doc,
   getDoc
 } from 'firebase/firestore';
@@ -55,11 +54,12 @@ export function subscribeToSession(
 ) {
   const q = query(
     collection(db, 'submissions'),
-    where('session_code', '==', sessionCode),
-    orderBy('created_at', 'desc')
+    where('session_code', '==', sessionCode)
   );
   
   return onSnapshot(q, (snapshot) => {
+    console.log(`Session ${sessionCode}: Received ${snapshot.size} documents`);
+    
     const submissions: Submission[] = [];
     
     snapshot.forEach((docSnapshot) => {
@@ -74,6 +74,9 @@ export function subscribeToSession(
       });
     });
     
+    // Sort submissions by created_at in descending order (newest first)
+    submissions.sort((a, b) => b.created_at.getTime() - a.created_at.getTime());
+    
     const results = submissions.map(sub => calculateQuizResult(sub.questions_answers));
     
     const sessionData: SessionData = {
@@ -82,6 +85,7 @@ export function subscribeToSession(
       results
     };
     
+    console.log(`Session ${sessionCode}: Processed ${submissions.length} submissions`);
     callback(sessionData);
   }, (error) => {
     console.error('Error listening to session:', error);

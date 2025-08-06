@@ -17,7 +17,9 @@ const SessionPage: React.FC = () => {
       return;
     }
 
+    console.log(`Setting up listener for session: ${sessionCode}`);
     const unsubscribe = subscribeToSession(sessionCode, (data) => {
+      console.log(`SessionPage received data for session ${sessionCode}:`, data);
       setSessionData(data);
     });
 
@@ -169,21 +171,7 @@ const SessionPage: React.FC = () => {
           </div>
         )}
 
-        {/* Join Session Button */}
-        <div className="bg-white rounded-2xl shadow-xl p-6 mt-6">
-          <div className="text-center">
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Join This Session</h3>
-            <p className="text-gray-600 mb-4">
-              Take the quiz to see your results on this graph
-            </p>
-            <button
-              onClick={() => navigate(`/quiz/${sessionCode}`, { state: { sessionCode } })}
-              className="bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 transition-colors font-medium"
-            >
-              Start Quiz
-            </button>
-          </div>
-        </div>
+
       </div>
 
       {/* Share Modal */}
