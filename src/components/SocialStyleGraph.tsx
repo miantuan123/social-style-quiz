@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from 'react';
-import mermaid from 'mermaid';
-import type { QuizResult } from '../types';
+import React, { useEffect, useRef } from "react";
+import mermaid from "mermaid";
+import type { QuizResult } from "../types";
 
 interface SocialStyleGraphProps {
   results: QuizResult[];
@@ -13,22 +13,22 @@ const SocialStyleGraph: React.FC<SocialStyleGraphProps> = ({
   results,
   submissions,
   currentUserResult,
-  currentUserName
+  currentUserName,
 }) => {
   const graphRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     mermaid.initialize({
       startOnLoad: false,
-      theme: 'default',
-      securityLevel: 'loose',
+      theme: "default",
+      securityLevel: "loose",
       quadrantChart: {
         chartWidth: 600,
         chartHeight: 500,
         titleFontSize: 18,
         quadrantLabelFontSize: 14,
         pointLabelFontSize: 12,
-        pointRadius: 8
+        pointRadius: 8,
       },
       themeVariables: {
         quadrant1Fill: "#e3f2fd",
@@ -40,11 +40,11 @@ const SocialStyleGraph: React.FC<SocialStyleGraphProps> = ({
         quadrant3TextFill: "#c62828",
         quadrant4TextFill: "#7b1fa2",
         quadrantPointFill: "#1976d2",
-        quadrantPointTextFill: "#ffffff",
-        quadrantXAxisTextFill: "#424242",
-        quadrantYAxisTextFill: "#424242",
-        quadrantTitleFill: "#212121"
-      }
+        quadrantPointTextFill: "#000000",
+        quadrantXAxisTextFill: "#ffffff", // Changed from #424242 to black
+        quadrantYAxisTextFill: "#ffffff", // Changed from #424242 to black
+        quadrantTitleFill: "#212121",
+      },
     });
   }, []);
 
@@ -60,27 +60,29 @@ const SocialStyleGraph: React.FC<SocialStyleGraphProps> = ({
       let mermaidCode = `quadrantChart
     title Social Style Assessment Results
     x-axis Tell --> Ask
-    y-axis Controls --> Emotes
-    quadrant-1 Facilitator
-    quadrant-2 Expressive
-    quadrant-3 Driver
-    quadrant-4 Analyser`;
+    y-axis Emotes --> Controls
+    quadrant-1 Analyser
+    quadrant-2 Driver
+    quadrant-3 Expressive
+    quadrant-4 Facilitator`;
 
       // Add participant data points (simplified without styling)
       results.forEach((result, index) => {
         const submission = submissions[index];
         const x = normalizeCoordinate(result.coordinates.x);
         const y = normalizeCoordinate(result.coordinates.y);
-        const participantName = submission?.name || `Participant ${index + 1}`;
-        
-        // Create a safe identifier that avoids Mermaid reserved words
-        const safeId = `Participant_${index + 1}`;
-        
+
+        // Create a safe identifier that avoids Mermaid reserved words and special characters
+        const safeId = (submission?.name || `Participant_${index + 1}`).replace(
+          /[^a-zA-Z0-9]/g,
+          "_"
+        );
+
         // Format coordinates, converting 1.00 to 1
-        const xFormatted = x === 1 ? '1' : x.toFixed(2);
-        const yFormatted = y === 1 ? '1' : y.toFixed(2);
-        
-        // Simple data point without complex styling
+        const xFormatted = x === 1 ? "1" : x.toFixed(2);
+        const yFormatted = y === 1 ? "1" : y.toFixed(2);
+
+        // Add the point without quotes
         mermaidCode += `\n    ${safeId}: [${xFormatted}, ${yFormatted}]`;
       });
 
@@ -88,18 +90,18 @@ const SocialStyleGraph: React.FC<SocialStyleGraphProps> = ({
     };
 
     const renderGraph = async () => {
-      let graphCode = '';
+      let graphCode = "";
       try {
         graphCode = generateMermaidGraph();
-        console.log('Mermaid code:', graphCode);
-        
-        const { svg } = await mermaid.render('social-style-graph', graphCode);
+        console.log("Mermaid code:", graphCode);
+
+        const { svg } = await mermaid.render("social-style-graph", graphCode);
         if (graphRef.current) {
           graphRef.current.innerHTML = svg;
         }
       } catch (error) {
-        console.error('Error rendering Mermaid graph:', error);
-        console.error('Graph code that failed:', graphCode);
+        console.error("Error rendering Mermaid graph:", error);
+        console.error("Graph code that failed:", graphCode);
         // Fallback to simple text display
         renderFallback();
       }
@@ -119,53 +121,69 @@ const SocialStyleGraph: React.FC<SocialStyleGraphProps> = ({
                 <div class="absolute top-1/2 left-0 right-0 h-px bg-gray-300"></div>
                 
                 <!-- Quadrant labels -->
-                <div class="absolute top-2 left-2 text-xs font-medium text-gray-600">Emotes</div>
-                <div class="absolute top-2 right-2 text-xs font-medium text-gray-600">Emotes</div>
-                <div class="absolute bottom-2 left-2 text-xs font-medium text-gray-600">Controls</div>
-                <div class="absolute bottom-2 right-2 text-xs font-medium text-gray-600">Controls</div>
-                <div class="absolute top-1/2 left-2 text-xs font-medium text-gray-600 transform -translate-y-1/2">Tell</div>
-                <div class="absolute top-1/2 right-2 text-xs font-medium text-gray-600 transform -translate-y-1/2">Ask</div>
+                <div class="absolute top-2 left-2 text-xs font-medium text-white-600">Controls</div>
+                <div class="absolute top-2 right-2 text-xs font-medium text-white-600">Controls</div>
+                <div class="absolute bottom-2 left-2 text-xs font-medium text-white-600">Emotes</div>
+                <div class="absolute bottom-2 right-2 text-xs font-medium text-white-600">Emotes</div>
+                <div class="absolute top-1/2 left-2 text-xs font-medium text-gray-white transform -translate-y-1/2">Tell</div>
+                <div class="absolute top-1/2 right-2 text-xs font-medium text-gray-white transform -translate-y-1/2">Ask</div>
                 
                 <!-- Quadrant names -->
-                <div class="absolute top-4 left-4 text-sm font-semibold text-blue-600">Expressive</div>
-                <div class="absolute top-4 right-4 text-sm font-semibold text-green-600">Facilitator</div>
-                <div class="absolute bottom-4 left-4 text-sm font-semibold text-red-600">Driver</div>
-                <div class="absolute bottom-4 right-4 text-sm font-semibold text-purple-600">Analyser</div>
+                <div class="absolute top-4 left-4 text-sm font-semibold text-blue-600">Driver</div>
+                <div class="absolute top-4 right-4 text-sm font-semibold text-green-600">Analyser</div>
+                <div class="absolute bottom-4 left-4 text-sm font-semibold text-red-600">Expressive</div>
+                <div class="absolute bottom-4 right-4 text-sm font-semibold text-purple-600">Facilitator</div>
                 
                 <!-- Data points -->
-                ${results.map((result, index) => {
-                  const submission = submissions[index];
-                  const isCurrentUser = currentUserResult && 
-                    result.coordinates.x === currentUserResult.coordinates.x && 
-                    result.coordinates.y === currentUserResult.coordinates.y;
-                  const x = ((result.coordinates.x + 5) / 10) * 100;
-                  const y = ((result.coordinates.y + 5) / 10) * 100;
-                  
-                  return `
+                ${results
+                  .map((result, index) => {
+                    const submission = submissions[index];
+                    const isCurrentUser =
+                      currentUserResult &&
+                      result.coordinates.x ===
+                        currentUserResult.coordinates.x &&
+                      result.coordinates.y === currentUserResult.coordinates.y;
+                    const x = ((result.coordinates.x + 5) / 10) * 100;
+                    const y = ((result.coordinates.y + 5) / 10) * 100;
+
+                    return `
                     <div
-                      class="absolute w-4 h-4 ${isCurrentUser ? 'bg-red-500 border-4 border-white' : 'bg-blue-500 border-2 border-white'} rounded-full transform -translate-x-2 -translate-y-2 shadow-lg"
+                      class="absolute w-4 h-4 ${
+                        isCurrentUser
+                          ? "bg-red-500 border-4 border-white"
+                          : "bg-blue-500 border-2 border-white"
+                      } rounded-full transform -translate-x-2 -translate-y-2 shadow-lg"
                       style="left: ${x}%; top: ${100 - y}%;"
-                      title="${submission?.name || 'Unknown'}: ${result.socialStyle}${isCurrentUser ? ' (You)' : ''}"
+                      title="${submission?.name || "Unknown"}: ${
+                      result.socialStyle
+                    }${isCurrentUser ? " (You)" : ""}"
                     ></div>
                   `;
-                }).join('')}
+                  })
+                  .join("")}
               </div>
             </div>
             <div class="mt-6">
               <h4 class="font-medium mb-2">Participants:</h4>
               <div class="space-y-1">
-                ${results.map((result, index) => {
-                  const submission = submissions[index];
-                  const isCurrentUser = currentUserResult && 
-                    result.coordinates.x === currentUserResult.coordinates.x && 
-                    result.coordinates.y === currentUserResult.coordinates.y;
-                  return `
-                    <div class="text-sm ${isCurrentUser ? 'font-bold text-red-600' : ''}">
-                      ${submission?.name || 'Unknown'}: ${result.socialStyle}
-                      ${isCurrentUser ? ' (You)' : ''}
+                ${results
+                  .map((result, index) => {
+                    const submission = submissions[index];
+                    const isCurrentUser =
+                      currentUserResult &&
+                      result.coordinates.x ===
+                        currentUserResult.coordinates.x &&
+                      result.coordinates.y === currentUserResult.coordinates.y;
+                    return `
+                    <div class="text-sm ${
+                      isCurrentUser ? "font-bold text-red-600" : ""
+                    }">
+                      ${submission?.name || "Unknown"}: ${result.socialStyle}
+                      ${isCurrentUser ? " (You)" : ""}
                     </div>
                   `;
-                }).join('')}
+                  })
+                  .join("")}
               </div>
             </div>
           </div>
@@ -188,7 +206,10 @@ const SocialStyleGraph: React.FC<SocialStyleGraphProps> = ({
 
   return (
     <div className="w-full">
-      <div ref={graphRef} className="w-full min-h-96 flex items-center justify-center" />
+      <div
+        ref={graphRef}
+        className="w-full min-h-96 flex items-center justify-center"
+      />
     </div>
   );
 };
