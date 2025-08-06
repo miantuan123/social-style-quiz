@@ -3,6 +3,7 @@ import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { subscribeToSession } from '../services/firebaseService';
 import type { SessionData } from '../types';
 import { Share2, Home } from 'lucide-react';
+import SocialStyleGraph from './SocialStyleGraph';
 
 const ResultsPage: React.FC = () => {
   const { submissionId } = useParams<{ submissionId: string }>();
@@ -129,61 +130,12 @@ const ResultsPage: React.FC = () => {
           {/* Graph */}
           <div className="bg-white rounded-2xl shadow-xl p-6">
             <h2 className="text-xl font-bold text-gray-900 mb-4">Session Results</h2>
-            <div className="relative w-full h-80 bg-gray-50 rounded-lg border-2 border-gray-200">
-              {/* Graph Grid */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-full h-full relative">
-                  {/* Vertical line */}
-                  <div className="absolute left-1/2 top-0 bottom-0 w-px bg-gray-300 transform -translate-x-px"></div>
-                  {/* Horizontal line */}
-                  <div className="absolute top-1/2 left-0 right-0 h-px bg-gray-300 transform -translate-y-px"></div>
-                  
-                  {/* Quadrant Labels */}
-                  <div className="absolute top-2 left-2 text-xs font-medium text-gray-600">C (Emotes)</div>
-                  <div className="absolute top-2 right-2 text-xs font-medium text-gray-600">C (Emotes)</div>
-                  <div className="absolute bottom-2 left-2 text-xs font-medium text-gray-600">D (Controls)</div>
-                  <div className="absolute bottom-2 right-2 text-xs font-medium text-gray-600">D (Controls)</div>
-                  <div className="absolute top-1/2 left-2 text-xs font-medium text-gray-600 transform -translate-y-1/2">A (Tell)</div>
-                  <div className="absolute top-1/2 right-2 text-xs font-medium text-gray-600 transform -translate-y-1/2">B (Ask)</div>
-                  
-                  {/* Quadrant Names */}
-                  <div className="absolute top-4 left-4 text-sm font-semibold text-blue-600">Expressive</div>
-                  <div className="absolute top-4 right-4 text-sm font-semibold text-green-600">Facilitator</div>
-                  <div className="absolute bottom-4 left-4 text-sm font-semibold text-red-600">Driver</div>
-                  <div className="absolute bottom-4 right-4 text-sm font-semibold text-purple-600">Analyser</div>
-                </div>
-              </div>
-
-              {/* Data Points */}
-              {sessionData?.results.map((res, index) => {
-                const x = ((res.coordinates.x + 5) / 10) * 100; // Convert -5 to 5 range to 0-100%
-                const y = ((res.coordinates.y + 5) / 10) * 100; // Convert -5 to 5 range to 0-100%
-                
-                return (
-                  <div
-                    key={index}
-                    className="absolute w-4 h-4 bg-blue-500 rounded-full transform -translate-x-2 -translate-y-2 border-2 border-white shadow-lg"
-                    style={{
-                      left: `${x}%`,
-                      top: `${100 - y}%` // Invert Y axis
-                    }}
-                    title={`${sessionData.submissions[index]?.name || 'Unknown'}: ${res.socialStyle}`}
-                  />
-                );
-              })}
-
-              {/* Current user's point (highlighted) */}
-              {result && (
-                <div
-                  className="absolute w-6 h-6 bg-red-500 rounded-full transform -translate-x-3 -translate-y-3 border-4 border-white shadow-lg animate-pulse"
-                  style={{
-                    left: `${((result.coordinates.x + 5) / 10) * 100}%`,
-                    top: `${100 - ((result.coordinates.y + 5) / 10) * 100}%`
-                  }}
-                  title={`${name}: ${result.socialStyle} (You)`}
-                />
-              )}
-            </div>
+            <SocialStyleGraph 
+              results={sessionData?.results || []}
+              submissions={sessionData?.submissions || []}
+              currentUserResult={result}
+              currentUserName={name}
+            />
           </div>
         </div>
 

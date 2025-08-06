@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { subscribeToSession } from '../services/firebaseService';
 import type { SessionData } from '../types';
-import { Share2, Home, Users } from 'lucide-react';
+import { Share2, Home } from 'lucide-react';
+import SocialStyleGraph from './SocialStyleGraph';
 
 const SessionPage: React.FC = () => {
   const { sessionCode } = useParams<{ sessionCode: string }>();
@@ -94,60 +95,10 @@ const SessionPage: React.FC = () => {
         {/* Live Results Graph */}
         <div className="bg-white rounded-2xl shadow-xl p-6 mb-6">
           <h2 className="text-xl font-bold text-gray-900 mb-4">Live Results</h2>
-          <div className="relative w-full h-80 bg-gray-50 rounded-lg border-2 border-gray-200">
-            {/* Graph Grid */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-full h-full relative">
-                {/* Vertical line */}
-                <div className="absolute left-1/2 top-0 bottom-0 w-px bg-gray-300 transform -translate-x-px"></div>
-                {/* Horizontal line */}
-                <div className="absolute top-1/2 left-0 right-0 h-px bg-gray-300 transform -translate-y-px"></div>
-                
-                {/* Quadrant Labels */}
-                <div className="absolute top-2 left-2 text-xs font-medium text-gray-600">C (Emotes)</div>
-                <div className="absolute top-2 right-2 text-xs font-medium text-gray-600">C (Emotes)</div>
-                <div className="absolute bottom-2 left-2 text-xs font-medium text-gray-600">D (Controls)</div>
-                <div className="absolute bottom-2 right-2 text-xs font-medium text-gray-600">D (Controls)</div>
-                <div className="absolute top-1/2 left-2 text-xs font-medium text-gray-600 transform -translate-y-1/2">A (Tell)</div>
-                <div className="absolute top-1/2 right-2 text-xs font-medium text-gray-600 transform -translate-y-1/2">B (Ask)</div>
-                
-                {/* Quadrant Names */}
-                <div className="absolute top-4 left-4 text-sm font-semibold text-blue-600">Expressive</div>
-                <div className="absolute top-4 right-4 text-sm font-semibold text-green-600">Facilitator</div>
-                <div className="absolute bottom-4 left-4 text-sm font-semibold text-red-600">Driver</div>
-                <div className="absolute bottom-4 right-4 text-sm font-semibold text-purple-600">Analyser</div>
-              </div>
-            </div>
-
-            {/* Data Points */}
-            {sessionData?.results.map((res, index) => {
-              const x = ((res.coordinates.x + 5) / 10) * 100;
-              const y = ((res.coordinates.y + 5) / 10) * 100;
-              
-              return (
-                <div
-                  key={index}
-                  className="absolute w-4 h-4 bg-blue-500 rounded-full transform -translate-x-2 -translate-y-2 border-2 border-white shadow-lg"
-                  style={{
-                    left: `${x}%`,
-                    top: `${100 - y}%`
-                  }}
-                  title={`${sessionData.submissions[index]?.name || 'Unknown'}: ${res.socialStyle}`}
-                />
-              );
-            })}
-
-            {/* No results message */}
-            {(!sessionData || sessionData.results.length === 0) && (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center text-gray-500">
-                  <Users className="w-12 h-12 mx-auto mb-2 opacity-50" />
-                  <p>No results yet</p>
-                  <p className="text-sm">Share the session code to get started</p>
-                </div>
-              </div>
-            )}
-          </div>
+          <SocialStyleGraph 
+            results={sessionData?.results || []}
+            submissions={sessionData?.submissions || []}
+          />
         </div>
 
         {/* Participants List */}
