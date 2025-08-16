@@ -107,7 +107,10 @@ const SessionPage: React.FC = () => {
           {/* Session info and QR code */}
           <div className="flex justify-between items-center">
             <div>
-              <p className="text-gray-600">Session Code: {sessionCode}</p>
+              <p className="text-gray-600 text-lg font-semibold">
+                Session Code:{" "}
+                <span className="font-bold text-xl">{sessionCode}</span>
+              </p>
               <p className="text-sm text-gray-500">
                 {sessionData?.submissions.length || 0} participants
               </p>
