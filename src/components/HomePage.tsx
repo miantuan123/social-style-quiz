@@ -46,8 +46,24 @@ const HomePage: React.FC = () => {
     }
   };
 
-  const handleCreateSession = () => {
-    const code = generateSessionCode();
+  const handleCreateSession = async () => {
+    let code = '';
+    let exists = true;
+    let attempts = 0;
+    const MAX_ATTEMPTS = 10;
+
+    while (exists && attempts < MAX_ATTEMPTS) {
+      code = generateSessionCode();
+      exists = await checkSessionExists(code);
+      attempts++;
+    }
+
+    if (exists) {
+      alert('Could not generate a unique session code. Please try again.');
+      console.error('Failed to generate a unique session code after multiple attempts.');
+      return;
+    }
+
     createSession(code);
     navigate(`/session/${code}`, {
       state: { sessionCode: code },
