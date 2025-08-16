@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { subscribeToSession } from "../services/firebaseService";
-import type { SessionData, Submission, QuizResult } from "../types/index";
+import type { SessionData, Submission } from "../types/index";
 import { Share2, Home, Info } from "lucide-react"; // Added Info icon
 import SocialStyleGraph from "./SocialStyleGraph";
 
