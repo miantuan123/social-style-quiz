@@ -153,7 +153,7 @@ const QuizPage: React.FC = () => {
               <button
                 onClick={handleSubmit}
                 disabled={!hasAnswered || isSubmitting}
-                className="px-8 py-3 bg-brand-600 text-white rounded-lg hover:bg-brand-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+                className="px-8 py-3 !bg-brand-500 text-white rounded-lg hover:!bg-brand-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
               >
                 {isSubmitting ? "Submitting..." : "Submit Quiz"}
               </button>

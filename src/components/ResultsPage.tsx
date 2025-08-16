@@ -29,7 +29,7 @@ const ResultsPage: React.FC = () => {
   }, [submissionId, sessionCode, navigate]);
 
   const handleShare = async () => {
-      copyToClipboard()
+    copyToClipboard();
   };
 
   const copyToClipboard = async () => {
@@ -58,10 +58,12 @@ const ResultsPage: React.FC = () => {
               <h1 className="!text-xl font-bold text-gray-900">Quiz Results</h1>
               <p className="text-gray-600">Session: {sessionCode}</p>
             </div>
-            <div className="flex flex-col space-y-2"> {/* Changed from flex-row to flex-col */}
+            <div className="flex flex-col space-y-2">
+              {" "}
+              {/* Changed from flex-row to flex-col */}
               <button
                 onClick={handleShare}
-                className="flex items-center px-4 py-2 bg-brand-600 text-white rounded-lg hover:bg-brand-700 transition-colors"
+                className="flex items-center px-4 py-2 !bg-brand-500 text-white rounded-lg hover:!bg-brand-700 transition-colors"
               >
                 <Share2 className="w-4 h-4 mr-2" />
                 Share

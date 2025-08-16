@@ -90,7 +90,7 @@ const SessionPage: React.FC = () => {
           <div className="flex space-x-3 mb-6">
             <button
               onClick={handleShare}
-              className="flex items-center px-4 py-2 bg-brand-600 text-white rounded-lg hover:bg-brand-700 transition-colors"
+              className="flex items-center px-4 py-2 !bg-brand-500 text-white rounded-lg hover:!bg-brand-700 transition-colors"
             >
               <Share2 className="w-4 h-4 mr-2" />
               Share Session
