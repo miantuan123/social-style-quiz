@@ -36,7 +36,7 @@ const SessionPage: React.FC = () => {
     if (qrCodeRef.current) {
       const url = `${window.location.origin}/?session_code=${sessionCode}`;
       QRCode.toCanvas(qrCodeRef.current, url, {
-        width: 160,
+        width: 240,
         margin: 2,
         color: {
           dark: "#000000",
@@ -90,14 +90,14 @@ const SessionPage: React.FC = () => {
           <div className="flex space-x-3 mb-6">
             <button
               onClick={handleShare}
-              className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              className="flex items-center px-4 py-2 bg-brand-600 text-white rounded-lg hover:bg-brand-700 transition-colors"
             >
               <Share2 className="w-4 h-4 mr-2" />
               Share Session
             </button>
             <button
               onClick={() => navigate("/")}
-              className="flex items-center px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
+              className="flex items-center px-4 py-2 bg-white-200 !border-brand-500 text-brand-700 rounded-lg hover:bg-brand-300 transition-colors"
             >
               <Home className="w-4 h-4 mr-2" />
               Home
@@ -113,7 +113,12 @@ const SessionPage: React.FC = () => {
               </p>
             </div>
             <div className="flex flex-col items-center">
-              <canvas ref={qrCodeRef} className="mb-2" />
+              <canvas
+                ref={qrCodeRef}
+                className="mb-2"
+                width={240} // Added explicit width
+                height={240} // Added explicit height
+              />
               <p className="text-sm text-gray-600">Scan to join</p>
             </div>
           </div>
@@ -145,7 +150,7 @@ const SessionPage: React.FC = () => {
                     <div className="font-medium text-gray-900">
                       {submission.name}
                     </div>
-                    <div className="text-sm text-blue-600">
+                    <div className="text-sm text-brand-600">
                       {subResult.socialStyle}
                     </div>
                     <div className="text-xs text-gray-500 mt-1">
@@ -176,7 +181,7 @@ const SessionPage: React.FC = () => {
             <div className="flex space-x-3">
               <button
                 onClick={copyToClipboard}
-                className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors"
+                className="flex-1 bg-brand-600 text-white py-2 px-4 rounded-lg hover:bg-brand-700 transition-colors"
               >
                 Copy Link
               </button>

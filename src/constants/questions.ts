@@ -13,151 +13,151 @@ export const questions: Question[] = [
   {
     question: "When working in a team, I prefer to:",
     options: {
-      a: "Take charge and direct others",
-      b: "Ask for input and collaborate"
-    }
+      a: "Emphasize ideas by change of voice tone",
+      b: "Little use of voice tone to emphasize ideas",
+    },
   },
   {
     question: "In meetings, I typically:",
     options: {
-      a: "Share my ideas and opinions openly",
-      b: "Listen to others before speaking"
-    }
+      a: "Expressions dominant and assertive",
+      b: "Expressions and posture quiet and subdued",
+    },
   },
   {
     question: "When making decisions, I:",
     options: {
-      a: "Trust my instincts and act quickly",
-      b: "Gather more information first"
-    }
+      a: "Voice projection loud and clear",
+      b: "Voice typically soft and calm",
+    },
   },
   {
     question: "When someone disagrees with me, I:",
     options: {
-      a: "Stand my ground and defend my position",
-      b: "Try to understand their perspective"
-    }
+      a: "Quick, clear, fast-paced speech",
+      b: "Deliberate, studied speech",
+    },
   },
   {
     question: "In social situations, I:",
     options: {
-      a: "Take the lead in conversations",
-      b: "Let others guide the discussion"
-    }
-  },
-  {
-    question: "When solving problems, I:",
-    options: {
-      a: "Propose solutions immediately",
-      b: "Ask questions to understand the problem better"
-    }
+      a: "Firm handshake",
+      b: "Soft handshake",
+    },
   },
   {
     question: "When giving feedback, I:",
     options: {
-      a: "Be direct and straightforward",
-      b: "Ask how they would like to receive feedback"
-    }
+      a: "Make statement more often than ask questions",
+      b: "Ask questions more often than make statements",
+    },
   },
   {
     question: "In group projects, I:",
     options: {
-      a: "Take on leadership roles",
-      b: "Support others in their roles"
-    }
+      a: "Find it easy to meet new people",
+      b: "Not comfortable around new people",
+    },
   },
   {
     question: "When someone is struggling, I:",
     options: {
-      a: "Tell them what to do",
-      b: "Ask how I can help"
-    }
+      a: "Tend to lean forward to make a point",
+      b: "Tend to lean back while in discussion",
+    },
   },
   {
     question: "When presenting ideas, I:",
     options: {
-      a: "Confidently state my position",
-      b: "Present options and ask for input"
-    }
+      a: "Directly express needs and wants",
+      b: "Vague about needs and wants",
+    },
   },
-  // Next 10 questions (C vs D - Emotes vs Controls)
+  {
+    question: "When solving problems, I:",
+    options: {
+      a: "Enjoy fast-paced, dynamic environment",
+      b: "Enjoy steady, calm environment",
+    },
+  },
+  // Next 10 questions (C vs D - people vs task)
   {
     question: "When I'm excited about something, I:",
     options: {
-      c: "Show my enthusiasm openly",
-      d: "Keep my emotions in check"
-    }
+      c: "Animated facial expressions",
+      d: "Limited facial expressions",
+    },
   },
   {
     question: "In stressful situations, I:",
     options: {
-      c: "Express my feelings to others",
-      d: "Focus on finding solutions"
-    }
+      c: "Actions open and eager",
+      d: "Actions cautious or careful",
+    },
   },
   {
     question: "When celebrating success, I:",
     options: {
-      c: "Share the joy with everyone",
-      d: "Acknowledge it quietly"
-    }
+      c: "Little effort to push for facts",
+      d: "Ask for facts and details",
+    },
   },
   {
     question: "When I'm frustrated, I:",
     options: {
-      c: "Let others know how I feel",
-      d: "Work through it privately"
-    }
+      c: "Frequent eye contact",
+      d: "Infrequent eye contact",
+    },
   },
   {
     question: "In team discussions, I:",
     options: {
-      c: "Show my reactions through facial expressions",
-      d: "Maintain a neutral expression"
-    }
+      c: "When working on projects, concerned about the impact on others",
+      d: "When working on projects, focused mostly on achieving the set objectives",
+    },
   },
   {
     question: "When receiving praise, I:",
     options: {
-      c: "Show my appreciation visibly",
-      d: "Accept it modestly"
-    }
+      c: "Open, friendly gestures",
+      d: "Limited use of gestures: hands clenched, arms folded or on the desk, etc.",
+    },
   },
   {
     question: "When someone shares good news, I:",
     options: {
-      c: "Get excited and celebrate with them",
-      d: "Congratulate them calmly"
-    }
+      c: "Flexible to changes to accommodate others",
+      d: "Prefer to stick to plan",
+    },
   },
   {
     question: "In disagreements, I:",
     options: {
-      c: "Show my emotions through body language",
-      d: "Keep my composure"
-    }
+      c: "Sensitive about personal interactions",
+      d: "Personal interactions are not a main concern",
+    },
   },
   {
     question: "When I'm nervous about something, I:",
     options: {
-      c: "Share my concerns with others",
-      d: "Handle it internally"
-    }
+      c: "Shares personal life, stories, feelings",
+      d: "Limited reference to personal feelings, storytelling, or small talk Reserved",
+    },
   },
   {
     question: "When working on creative projects, I:",
     options: {
-      c: "Show my passion and excitement",
-      d: "Focus on the technical aspects"
-    }
-  }
+      c: "Open, responsive",
+      d: "Reserved",
+    },
+  },
 ];
 
 export const socialStyles = {
-  'AC': 'Expressive',
-  'BC': 'Facilitator', 
-  'AD': 'Driver',
-  'BD': 'Analyser'
+  AC: "Expressive",
+  BC: "Amiable",
+  AD: "Driver",
+  BD: "Analyser",
 } as const;
 
-export type SocialStyle = keyof typeof socialStyles; 
+export type SocialStyle = keyof typeof socialStyles;

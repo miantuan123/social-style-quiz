@@ -41,8 +41,8 @@ const SocialStyleGraph: React.FC<SocialStyleGraphProps> = ({
         quadrant4TextFill: "#7b1fa2",
         quadrantPointFill: "#1976d2",
         quadrantPointTextFill: "#000000",
-        quadrantXAxisTextFill: "#ffffff", // Changed from #424242 to black
-        quadrantYAxisTextFill: "#ffffff", // Changed from #424242 to black
+        quadrantXAxisTextFill: "#212121", // Changed from #424242 to black
+        quadrantYAxisTextFill: "#212121", // Changed from #424242 to black
         quadrantTitleFill: "#212121",
       },
     });
@@ -59,12 +59,12 @@ const SocialStyleGraph: React.FC<SocialStyleGraphProps> = ({
 
       let mermaidCode = `quadrantChart
     title Social Style Assessment Results
-    x-axis Tell --> Ask
-    y-axis Emotes --> Controls
+    x-axis Tell - A --> Ask - B
+    y-axis People focused - C --> Task focused - D
     quadrant-1 Analyser
     quadrant-2 Driver
     quadrant-3 Expressive
-    quadrant-4 Facilitator`;
+    quadrant-4 Amiable`;
 
       // Add participant data points (simplified without styling)
       results.forEach((result, index) => {
@@ -128,10 +128,10 @@ const SocialStyleGraph: React.FC<SocialStyleGraphProps> = ({
                 <div class="absolute top-1/2 left-0 right-0 h-px bg-gray-300"></div>
                 
                 <!-- Quadrant labels -->
-                <div class="absolute top-2 left-2 text-xs font-medium text-white-600">Controls</div>
-                <div class="absolute top-2 right-2 text-xs font-medium text-white-600">Controls</div>
-                <div class="absolute bottom-2 left-2 text-xs font-medium text-white-600">Emotes</div>
-                <div class="absolute bottom-2 right-2 text-xs font-medium text-white-600">Emotes</div>
+                <div class="absolute top-2 left-2 text-xs font-medium text-white-600">Task focused</div>
+                <div class="absolute top-2 right-2 text-xs font-medium text-white-600">Task focused</div>
+                <div class="absolute bottom-2 left-2 text-xs font-medium !text-black-600">People focused</div>
+                <div class="absolute bottom-2 right-2 text-xs font-medium !text-black-600">People focused</div>
                 <div class="absolute top-1/2 left-2 text-xs font-medium text-gray-white transform -translate-y-1/2">Tell</div>
                 <div class="absolute top-1/2 right-2 text-xs font-medium text-gray-white transform -translate-y-1/2">Ask</div>
                 
@@ -139,7 +139,7 @@ const SocialStyleGraph: React.FC<SocialStyleGraphProps> = ({
                 <div class="absolute top-4 left-4 text-sm font-semibold text-blue-600">Driver</div>
                 <div class="absolute top-4 right-4 text-sm font-semibold text-green-600">Analyser</div>
                 <div class="absolute bottom-4 left-4 text-sm font-semibold text-red-600">Expressive</div>
-                <div class="absolute bottom-4 right-4 text-sm font-semibold text-purple-600">Facilitator</div>
+                <div class="absolute bottom-4 right-4 text-sm font-semibold text-purple-600">Amiable</div>
                 
                 <!-- Data points -->
                 ${results

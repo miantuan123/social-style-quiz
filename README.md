@@ -16,7 +16,7 @@ A mobile-responsive React webapp for conducting social style assessments with re
 The quiz categorizes participants into 4 social styles based on their communication and emotional expression preferences:
 
 - **Expressive (AC)**: Tell + Emotes - Outgoing, enthusiastic, and emotionally expressive
-- **Facilitator (BC)**: Ask + Emotes - Collaborative, supportive, and emotionally open
+- **Amiable (BC)**: Ask + Emotes - Collaborative, supportive, and emotionally open
 - **Driver (AD)**: Tell + Controls - Direct, decisive, and emotionally controlled
 - **Analyser (BD)**: Ask + Controls - Thoughtful, analytical, and emotionally reserved
 

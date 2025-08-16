@@ -67,7 +67,7 @@ const HomePage: React.FC = () => {
 
               <button
                 onClick={handleCreateSession}
-                className="w-full !bg-brand-500 text-white py-3 px-4 rounded-lg hover:!bg-brand-700 transition-colors font-medium"
+                className="w-full !bg-brand-500 text-white hover:!bg-brand-700 py-3 px-4 rounded-lg transition-colors font-medium"
               >
                 Create New Session
               </button>
@@ -80,7 +80,7 @@ const HomePage: React.FC = () => {
                     htmlFor="name"
                     className="block text-sm font-medium text-gray-700 mb-2"
                   >
-                    Your Name
+                    Name
                   </label>
                   <input
                     type="text"
@@ -116,7 +116,7 @@ const HomePage: React.FC = () => {
                 <div className="space-y-4">
                   <button
                     type="submit"
-                    className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                    className="w-full py-3 px-4 rounded-lg transition-colors font-medium !bg-brand-500 text-white hover:!bg-brand-700"
                   >
                     Continue
                   </button>
@@ -128,7 +128,7 @@ const HomePage: React.FC = () => {
                       setName("");
                       setSessionCode("");
                     }}
-                    className="w-full bg-gray-100 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-200 transition-colors font-medium"
+                    className="w-full py-3 px-4 rounded-lg transition-colors font-medium !bg-white hover:!bg-brand-100 text-brand-500 !border-brand-500"
                   >
                     Back
                   </button>
