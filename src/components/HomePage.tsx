@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { generateSessionCode } from "../utils/quizUtils";
 
 const HomePage: React.FC = () => {
@@ -7,6 +7,16 @@ const HomePage: React.FC = () => {
   const [name, setName] = useState("");
   const [showJoinForm, setShowJoinForm] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const code = params.get("session_code");
+    if (code) {
+      setSessionCode(code.toUpperCase());
+      setShowJoinForm(true);
+    }
+  }, [location.search]);
 
   const handleJoinSession = (e: React.FormEvent) => {
     e.preventDefault();

@@ -34,7 +34,7 @@ const SessionPage: React.FC = () => {
 
   useEffect(() => {
     if (qrCodeRef.current) {
-      const url = `${window.location.origin}`;
+      const url = `${window.location.origin}/?session_code=${sessionCode}`;
       QRCode.toCanvas(qrCodeRef.current, url, {
         width: 160,
         margin: 2,
@@ -44,10 +44,10 @@ const SessionPage: React.FC = () => {
         },
       });
     }
-  }, []);
+  }, [sessionCode]);
 
   const handleShare = async () => {
-    const url = `${window.location.origin}/session/${sessionCode}`;
+    const url = `${window.location.origin}/?session_code=${sessionCode}`;
 
     if (navigator.share) {
       try {
@@ -65,7 +65,7 @@ const SessionPage: React.FC = () => {
   };
 
   const copyToClipboard = async () => {
-    const url = `${window.location.origin}/session/${sessionCode}`;
+    const url = `${window.location.origin}/?session_code=${sessionCode}`;
     try {
       await navigator.clipboard.writeText(url);
       alert("Link copied to clipboard!");
