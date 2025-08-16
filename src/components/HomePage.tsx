@@ -1,31 +1,31 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { generateSessionCode } from '../utils/quizUtils';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { generateSessionCode } from "../utils/quizUtils";
 
 const HomePage: React.FC = () => {
-  const [sessionCode, setSessionCode] = useState('');
-  const [name, setName] = useState('');
+  const [sessionCode, setSessionCode] = useState("");
+  const [name, setName] = useState("");
   const [showJoinForm, setShowJoinForm] = useState(false);
   const navigate = useNavigate();
 
   const handleJoinSession = (e: React.FormEvent) => {
     e.preventDefault();
     if (sessionCode.trim() && name.trim()) {
-      navigate(`/quiz/${sessionCode}`, { 
-        state: { name, sessionCode } 
+      navigate(`/quiz/${sessionCode}`, {
+        state: { name, sessionCode },
       });
     }
   };
 
   const handleCreateSession = () => {
     const code = generateSessionCode();
-    navigate(`/session/${code}`, { 
-      state: { sessionCode: code } 
+    navigate(`/session/${code}`, {
+      state: { sessionCode: code },
     });
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center p-4">
       <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
@@ -41,7 +41,7 @@ const HomePage: React.FC = () => {
             <div className="space-y-4">
               <button
                 onClick={() => setShowJoinForm(true)}
-                className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                className="w-full py-3 px-4 rounded-lg font-medium !bg-white hover:!bg-brand-100 text-brand-500 !border-brand-500"
               >
                 Join Session
               </button>
@@ -57,7 +57,7 @@ const HomePage: React.FC = () => {
 
               <button
                 onClick={handleCreateSession}
-                className="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-colors font-medium"
+                className="w-full !bg-brand-500 text-white py-3 px-4 rounded-lg hover:!bg-brand-700 transition-colors font-medium"
               >
                 Create New Session
               </button>
@@ -66,7 +66,10 @@ const HomePage: React.FC = () => {
             <>
               <form onSubmit={handleJoinSession} className="space-y-4">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="name"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
                     Your Name
                   </label>
                   <input
@@ -79,22 +82,27 @@ const HomePage: React.FC = () => {
                     required
                   />
                 </div>
-                
+
                 <div>
-                  <label htmlFor="sessionCode" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="sessionCode"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
                     Session Code
                   </label>
                   <input
                     type="text"
                     id="sessionCode"
                     value={sessionCode}
-                    onChange={(e) => setSessionCode(e.target.value.toUpperCase())}
+                    onChange={(e) =>
+                      setSessionCode(e.target.value.toUpperCase())
+                    }
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="Enter session code"
                     required
                   />
                 </div>
-                
+
                 <div className="space-y-4">
                   <button
                     type="submit"
@@ -102,13 +110,13 @@ const HomePage: React.FC = () => {
                   >
                     Continue
                   </button>
-                  
+
                   <button
                     type="button"
                     onClick={() => {
                       setShowJoinForm(false);
-                      setName('');
-                      setSessionCode('');
+                      setName("");
+                      setSessionCode("");
                     }}
                     className="w-full bg-gray-100 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-200 transition-colors font-medium"
                   >

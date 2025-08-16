@@ -80,11 +80,13 @@ const SessionPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+    <div className="min-h-screen p-4">
       <div className="max-w-4xl mx-auto">
         {/* Header with buttons below title */}
         <div className="bg-white rounded-2xl shadow-xl p-6 mb-6">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Session Results</h1>
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">
+            Session Results
+          </h1>
           <div className="flex space-x-3 mb-6">
             <button
               onClick={handleShare}
@@ -94,7 +96,7 @@ const SessionPage: React.FC = () => {
               Share Session
             </button>
             <button
-              onClick={() => navigate('/')}
+              onClick={() => navigate("/")}
               className="flex items-center px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
             >
               <Home className="w-4 h-4 mr-2" />
