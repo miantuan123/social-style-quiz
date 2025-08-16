@@ -98,6 +98,13 @@ const SocialStyleGraph: React.FC<SocialStyleGraphProps> = ({
         const { svg } = await mermaid.render("social-style-graph", graphCode);
         if (graphRef.current) {
           graphRef.current.innerHTML = svg;
+          graphRef.current.style.overflow = "visible"; // Allow overflow display of container
+
+          // Also set overflow visible on the SVG element itself
+          const svgElement = graphRef.current.querySelector("svg");
+          if (svgElement) {
+            svgElement.style.overflow = "visible";
+          }
         }
       } catch (error) {
         console.error("Error rendering Mermaid graph:", error);
@@ -208,7 +215,7 @@ const SocialStyleGraph: React.FC<SocialStyleGraphProps> = ({
     <div className="w-full">
       <div
         ref={graphRef}
-        className="w-full min-h-96 flex items-center justify-center"
+        className="w-full min-h-96 flex items-center justify-center overflow-visible"
       />
     </div>
   );

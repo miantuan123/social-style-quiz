@@ -134,7 +134,7 @@ const ResultsPage: React.FC = () => {
           </div>
 
           {/* Graph */}
-          <div className="bg-white rounded-2xl shadow-xl p-6">
+          <div className="bg-white rounded-2xl shadow-xl p-6 overflow-visible">
             <h2 className="text-xl font-bold text-gray-900 mb-4">
               Session Results
             </h2>
