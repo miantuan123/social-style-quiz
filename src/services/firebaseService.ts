@@ -9,9 +9,8 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { db } from "../lib/firebase";
-import type { Submission, SessionData } from "../types";
+import type { Submission, SessionData } from "../types/index";
 import { calculateQuizResult } from "../utils/quizUtils";
-import type { Session } from "react-router-dom";
 
 export async function createSubmission(
   sessionCode: string,

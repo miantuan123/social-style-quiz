@@ -1,4 +1,4 @@
-import type { QuizResult } from "../types";
+import type { QuizResult } from "../types/index";
 import { socialStyles } from "../constants/questions";
 
 export const QUIZ_PROMPT =

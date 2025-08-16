@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { subscribeToSession } from "../services/firebaseService";
-import type { SessionData } from "../types";
+import type { SessionData, Submission, QuizResult } from "../types/index";
 import { Share2, Home } from "lucide-react";
 import SocialStyleGraph from "./SocialStyleGraph";
 import QRCode from "qrcode";
@@ -143,7 +143,7 @@ const SessionPage: React.FC = () => {
               Participants ({sessionData.submissions.length})
             </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {sessionData.submissions.map((submission, index) => {
+              {sessionData.submissions.map((submission: Submission, index: number) => {
                 const subResult = sessionData.results[index];
                 return (
                   <div

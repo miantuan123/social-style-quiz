@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import mermaid from "mermaid";
-import type { QuizResult } from "../types";
+import type { QuizResult } from "../types/index";
 
 interface SocialStyleGraphProps {
   results: QuizResult[];
