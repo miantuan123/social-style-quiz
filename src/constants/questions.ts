@@ -20,8 +20,15 @@ export const questions: Question[] = [
   {
     question: "In meetings, I typically:",
     options: {
-      a: "Expressions dominant and assertive",
       b: "Expressions and posture quiet and subdued",
+      a: "Expressions dominant and assertive",
+    },
+  },
+  {
+    question: "In disagreements, I:",
+    options: {
+      d: "Personal interactions are not a main concern",
+      c: "Sensitive about personal interactions",
     },
   },
   {
@@ -39,10 +46,17 @@ export const questions: Question[] = [
     },
   },
   {
+    question: "In team discussions, I:",
+    options: {
+      c: "When working on projects, concerned about the impact on others",
+      d: "When working on projects, focused mostly on achieving the set objectives",
+    },
+  },
+  {
     question: "In social situations, I:",
     options: {
-      a: "Firm handshake",
       b: "Soft handshake",
+      a: "Firm handshake",
     },
   },
   {
@@ -69,8 +83,8 @@ export const questions: Question[] = [
   {
     question: "When presenting ideas, I:",
     options: {
-      a: "Directly express needs and wants",
       b: "Vague about needs and wants",
+      a: "Directly express needs and wants",
     },
   },
   {
@@ -84,8 +98,8 @@ export const questions: Question[] = [
   {
     question: "When I'm excited about something, I:",
     options: {
-      c: "Animated facial expressions",
       d: "Limited facial expressions",
+      c: "Animated facial expressions",
     },
   },
   {
@@ -105,15 +119,8 @@ export const questions: Question[] = [
   {
     question: "When I'm frustrated, I:",
     options: {
-      c: "Frequent eye contact",
       d: "Infrequent eye contact",
-    },
-  },
-  {
-    question: "In team discussions, I:",
-    options: {
-      c: "When working on projects, concerned about the impact on others",
-      d: "When working on projects, focused mostly on achieving the set objectives",
+      c: "Frequent eye contact",
     },
   },
   {
@@ -128,13 +135,6 @@ export const questions: Question[] = [
     options: {
       c: "Flexible to changes to accommodate others",
       d: "Prefer to stick to plan",
-    },
-  },
-  {
-    question: "In disagreements, I:",
-    options: {
-      c: "Sensitive about personal interactions",
-      d: "Personal interactions are not a main concern",
     },
   },
   {
