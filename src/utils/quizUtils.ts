@@ -10,26 +10,19 @@ export function calculateQuizResult(answers: {
   // Calculate first half (questions 1-10, A vs B)
   let aCount = 0;
   let bCount = 0;
-
-  for (let i = 1; i <= 10; i++) {
-    const answer = answers[`q${i}`];
-    if (answer === "a") aCount++;
-    if (answer === "b") bCount++;
-  }
-
-  const firstHalfDifference = Math.abs(aCount - bCount);
-  const firstHalfDominant = aCount >= bCount ? "a" : "b";
-
-  // Calculate second half (questions 11-20, C vs D)
   let cCount = 0;
   let dCount = 0;
 
-  for (let i = 11; i <= 20; i++) {
+  for (let i = 1; i <= 20; i++) {
     const answer = answers[`q${i}`];
+    if (answer === "a") aCount++;
+    if (answer === "b") bCount++;
     if (answer === "c") cCount++;
     if (answer === "d") dCount++;
   }
-
+  
+  const firstHalfDifference = Math.abs(aCount - bCount);
+  const firstHalfDominant = aCount >= bCount ? "a" : "b";
   const secondHalfDifference = Math.abs(cCount - dCount);
   const secondHalfDominant = cCount >= dCount ? "c" : "d";
 
