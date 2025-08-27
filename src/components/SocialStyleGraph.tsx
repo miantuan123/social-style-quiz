@@ -59,8 +59,8 @@ const SocialStyleGraph: React.FC<SocialStyleGraphProps> = ({
 
       let mermaidCode = `quadrantChart
     title Social Style Assessment Results
-    x-axis Ask - B --> Tell - A
-    y-axis People focused - C --> Task focused - D
+    x-axis Asks more --> Tells more
+    y-axis People focused --> Task focused
     quadrant-1 Driver
     quadrant-2 Analyser
     quadrant-3 Amiable
@@ -132,8 +132,8 @@ const SocialStyleGraph: React.FC<SocialStyleGraphProps> = ({
                 <div class="absolute top-2 right-2 text-xs font-medium text-white-600">Task focused</div>
                 <div class="absolute bottom-2 left-2 text-xs font-medium !text-black-600">People focused</div>
                 <div class="absolute bottom-2 right-2 text-xs font-medium !text-black-600">People focused</div>
-                <div class="absolute top-1/2 left-2 text-xs font-medium text-gray-white transform -translate-y-1/2">Tell</div>
-                <div class="absolute top-1/2 right-2 text-xs font-medium text-gray-white transform -translate-y-1/2">Ask</div>
+                <div class="absolute top-1/2 left-2 text-xs font-medium text-gray-white transform -translate-y-1/2">Tells more</div>
+                <div class="absolute top-1/2 right-2 text-xs font-medium text-gray-white transform -translate-y-1/2">Asks more</div>
                 
                 <!-- Quadrant names -->
                 <div class="absolute top-4 left-4 text-sm font-semibold text-blue-600">Analyser</div>

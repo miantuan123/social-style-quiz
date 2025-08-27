@@ -61,13 +61,13 @@ const ResultsPage: React.FC = () => {
             <div className="flex flex-col space-y-2">
               {" "}
               {/* Changed from flex-row to flex-col */}
-              <button
+              {/* <button
                 onClick={handleShare}
                 className="flex items-center px-4 py-2 !bg-brand-500 text-white rounded-lg hover:!bg-brand-700 transition-colors"
               >
                 <Share2 className="w-4 h-4 mr-2" />
                 Share
-              </button>
+              </button> */}
               <button
                 onClick={() => navigate("/")}
                 className="flex items-center px-4 py-2 bg-white-200 text-brand-700 rounded-lg hover:bg-brand-300 transition-colors !border-brand-500"
@@ -98,8 +98,8 @@ const ResultsPage: React.FC = () => {
                   Assertiveness
                 </h3>
                 <div className="flex justify-between text-sm">
-                  <span>Tell (A): {result.firstHalf.a}</span>
-                  <span>Ask (B): {result.firstHalf.b}</span>
+                  <span>Tells more: {result.firstHalf.a}</span>
+                  <span>Asks more: {result.firstHalf.b}</span>
                 </div>
               </div>
 
@@ -108,8 +108,8 @@ const ResultsPage: React.FC = () => {
                   Responsiveness
                 </h3>
                 <div className="flex justify-between text-sm">
-                  <span>People focused (C): {result.secondHalf.c}</span>
-                  <span>Task focused (D): {result.secondHalf.d}</span>
+                  <span>People focused: {result.secondHalf.c}</span>
+                  <span>Task focused: {result.secondHalf.d}</span>
                 </div>
               </div>
             </div>
@@ -149,10 +149,10 @@ const ResultsPage: React.FC = () => {
                     <div className="text-sm text-brand-600">
                       {subResult.socialStyle}
                     </div>
-                    <div className="text-xs text-gray-500 mt-1">
-                      A:{subResult.firstHalf.a} B:{subResult.firstHalf.b} | C:
+                    {/* <div className="text-xs text-gray-500 mt-1">
+                      Tell :{subResult.firstHalf.a} B:{subResult.firstHalf.b} | C:
                       {subResult.secondHalf.c} D:{subResult.secondHalf.d}
-                    </div>
+                    </div> */}
                   </div>
                 );
               })}
