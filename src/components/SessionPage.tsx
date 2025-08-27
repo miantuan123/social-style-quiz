@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { subscribeToSession } from "../services/firebaseService";
 import type { SessionData, Submission } from "../types/index";
-import { Share2, Home } from "lucide-react";
+import { Home } from "lucide-react";
 import SocialStyleGraph from "./SocialStyleGraph";
 import QRCode from "qrcode";
 
@@ -12,7 +12,7 @@ const SessionPage: React.FC = () => {
   const qrCodeRef = useRef<HTMLCanvasElement>(null);
 
   const [sessionData, setSessionData] = useState<SessionData | null>(null);
-  const [showShareModal, setShowShareModal] = useState(false);
+
 
   useEffect(() => {
     if (!sessionCode) {
@@ -46,30 +46,11 @@ const SessionPage: React.FC = () => {
     }
   }, [sessionCode]);
 
-  const handleShare = async () => {
-    const url = `${window.location.origin}/?session_code=${sessionCode}`;
-
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: "Social Style Quiz Session",
-          text: `Join our Social Style Quiz session: ${sessionCode}`,
-          url: url,
-        });
-      } catch (error) {
-        console.log("Error sharing:", error);
-      }
-    } else {
-      setShowShareModal(true);
-    }
-  };
-
   const copyToClipboard = async () => {
     const url = `${window.location.origin}/?session_code=${sessionCode}`;
     try {
       await navigator.clipboard.writeText(url);
       alert("Link copied to clipboard!");
-      setShowShareModal(false);
     } catch (error) {
       console.error("Failed to copy:", error);
     }
@@ -88,13 +69,7 @@ const SessionPage: React.FC = () => {
             Session Results
           </h1>
           <div className="flex space-x-3 mb-6">
-            {/* <button
-              onClick={handleShare}
-              className="flex items-center px-4 py-2 !bg-brand-500 text-white rounded-lg hover:!bg-brand-700 transition-colors"
-            >
-              <Share2 className="w-4 h-4 mr-2" />
-              Share Session
-            </button> */}
+
             <button
               onClick={() => navigate("/")}
               className="flex items-center px-4 py-2 bg-white-200 !border-brand-500 text-brand-700 rounded-lg hover:bg-brand-300 transition-colors"
@@ -168,36 +143,7 @@ const SessionPage: React.FC = () => {
         )}
       </div>
 
-      {/* Share Modal */}
-      {showShareModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-2xl p-6 max-w-md w-full">
-            <h3 className="text-lg font-bold text-gray-900 mb-4">
-              Share Session
-            </h3>
-            <p className="text-gray-600 mb-4">
-              Share this link with others to join the session:
-            </p>
-            <div className="bg-gray-100 p-3 rounded-lg mb-4 break-all text-sm">
-              {`${window.location.origin}/session/${sessionCode}`}
-            </div>
-            <div className="flex space-x-3">
-              <button
-                onClick={copyToClipboard}
-                className="flex-1 bg-brand-600 text-white py-2 px-4 rounded-lg hover:bg-brand-700 transition-colors"
-              >
-                Copy Link
-              </button>
-              <button
-                onClick={() => setShowShareModal(false)}
-                className="flex-1 bg-gray-200 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+
     </div>
   );
 };

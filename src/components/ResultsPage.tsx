@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { subscribeToSession } from "../services/firebaseService";
 import type { SessionData, Submission } from "../types/index";
-import { Share2, Home, Info } from "lucide-react"; // Added Info icon
+import { Home, Info } from "lucide-react"; // Added Info icon
 import SocialStyleGraph from "./SocialStyleGraph";
 
 const ResultsPage: React.FC = () => {
@@ -28,21 +28,21 @@ const ResultsPage: React.FC = () => {
     return () => unsubscribe();
   }, [submissionId, sessionCode, navigate]);
 
-  const handleShare = async () => {
-    copyToClipboard();
-  };
+  // const handleShare = async () => {
+  //   copyToClipboard();
+  // };
 
-  const copyToClipboard = async () => {
-    const url = `${window.location.origin}/results/${submissionId}`; // Changed from sessionCode to submissionId
-    try {
-      await navigator.clipboard.writeText(url);
-      setShowCopiedAlert(true);
-      setTimeout(() => setShowCopiedAlert(false), 3000);
-      setShowShareModal(false);
-    } catch (error) {
-      console.error("Failed to copy:", error);
-    }
-  };
+  // const copyToClipboard = async () => {
+  //   const url = `${window.location.origin}/results/${submissionId}`; // Changed from sessionCode to submissionId
+  //   try {
+  //     await navigator.clipboard.writeText(url);
+  //     setShowCopiedAlert(true);
+  //     setTimeout(() => setShowCopiedAlert(false), 3000);
+  //     setShowShareModal(false);
+  //   } catch (error) {
+  //     console.error("Failed to copy:", error);
+  //   }
+  // };
 
   if (!result || !sessionCode) {
     return null;
@@ -160,43 +160,6 @@ const ResultsPage: React.FC = () => {
           </div>
         )}
       </div>
-
-      {/* Share Modal */}
-      {showShareModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-2xl p-6 max-w-md w-full">
-            <h3 className="text-lg font-bold text-gray-900 mb-4">
-              Share Results
-            </h3>
-            <p className="text-gray-600 mb-4">
-              Share this link with others to view the session results:
-            </p>
-            <div className="bg-gray-100 p-3 rounded-lg mb-4 break-all text-sm">
-              {`${window.location.origin}/results/${submissionId}`}
-            </div>
-            <div className="flex space-x-3">
-              <button
-                onClick={copyToClipboard}
-                className="flex-1 bg-brand-600 text-white py-2 px-4 rounded-lg hover:bg-brand-700 transition-colors"
-              >
-                Copy Link
-              </button>
-              <button
-                onClick={() => setShowShareModal(false)}
-                className="flex-1 bg-gray-200 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-      {showCopiedAlert && (
-        <div className="fixed bottom-4 right-4 bg-brand-500 text-white px-4 py-2 rounded-lg shadow-lg flex items-center">
-          <Info className="w-4 h-4 mr-2" />
-          Link copied to clipboard!
-        </div>
-      )}
     </div>
   );
 };
