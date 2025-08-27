@@ -35,7 +35,7 @@ export function calculateQuizResult(answers: {
   // X-axis: A (left) to B (right), range -5 to 5
   // Y-axis: D (bottom) to C (top), range -5 to 5
   const x =
-    firstHalfDominant === "a" ? -firstHalfDifference : firstHalfDifference;
+    firstHalfDominant === "a" ? firstHalfDifference : -firstHalfDifference;
   const y =
     secondHalfDominant === "c" ? -secondHalfDifference : secondHalfDifference;
 
@@ -62,9 +62,9 @@ export function generateSessionCode(): string {
 }
 
 export function getQuadrantLabel(x: number, y: number): string {
-  if (x >= 0 && y >= 0) return "BC"; // Amiable
-  if (x < 0 && y >= 0) return "AC"; // Expressive
-  if (x >= 0 && y < 0) return "BD"; // Analyser
-  if (x < 0 && y < 0) return "AD"; // Driver
+  if (x >= 0 && y >= 0) return "BD"; // Analyser
+  if (x < 0 && y >= 0) return "AD"; // Driver
+  if (x >= 0 && y < 0) return "BC"; // Amiable
+  if (x < 0 && y < 0) return "AC"; // Expressive
   return "Unknown";
 }
