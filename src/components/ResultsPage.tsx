@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { subscribeToSession } from "../services/firebaseService";
 import type { SessionData, Submission } from "../types/index";
-import { Home, Info } from "lucide-react"; // Added Info icon
+import { Home } from "lucide-react"; // Added Info icon
 import SocialStyleGraph from "./SocialStyleGraph";
 
 const ResultsPage: React.FC = () => {
@@ -12,8 +12,6 @@ const ResultsPage: React.FC = () => {
   const { name, result, sessionCode } = location.state || {};
 
   const [sessionData, setSessionData] = useState<SessionData | null>(null);
-  const [showShareModal, setShowShareModal] = useState(false);
-  const [showCopiedAlert, setShowCopiedAlert] = useState(false);
 
   useEffect(() => {
     if (!submissionId || !sessionCode) {
@@ -78,7 +76,6 @@ const ResultsPage: React.FC = () => {
             </div>
           </div>
         </div>
-
         <div className="grid lg:grid-cols-2 gap-6">
           {/* Personal Results */}
           <div className="bg-white rounded-2xl shadow-xl p-6">

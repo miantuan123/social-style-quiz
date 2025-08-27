@@ -46,15 +46,15 @@ const SessionPage: React.FC = () => {
     }
   }, [sessionCode]);
 
-  const copyToClipboard = async () => {
-    const url = `${window.location.origin}/?session_code=${sessionCode}`;
-    try {
-      await navigator.clipboard.writeText(url);
-      alert("Link copied to clipboard!");
-    } catch (error) {
-      console.error("Failed to copy:", error);
-    }
-  };
+  // const copyToClipboard = async () => {
+  //   const url = `${window.location.origin}/?session_code=${sessionCode}`;
+  //   try {
+  //     await navigator.clipboard.writeText(url);
+  //     alert("Link copied to clipboard!");
+  //   } catch (error) {
+  //     console.error("Failed to copy:", error);
+  //   }
+  // };
 
   if (!sessionCode) {
     return null;
