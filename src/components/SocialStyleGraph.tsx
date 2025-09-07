@@ -139,7 +139,7 @@ const SocialStyleGraph: React.FC<SocialStyleGraphProps> = ({
                 <div class="absolute top-4 left-4 text-sm font-semibold text-blue-600">Analyser</div>
                 <div class="absolute top-4 right-4 text-sm font-semibold text-green-600">Driver</div>
                 <div class="absolute bottom-4 left-4 text-sm font-semibold text-red-600">Amiable</div>
-                <div class="absolute bottom-4 right-4 text-sm font-semibold text-purple-600">Expressive
+                <div class="absolute bottom-4 right-4 text-sm font-semibold text-purple-600">Expressive</div>
                 
                 <!-- Data points -->
                 ${results

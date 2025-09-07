@@ -20,7 +20,12 @@ const ResultsPage: React.FC = () => {
     }
 
     const unsubscribe = subscribeToSession(sessionCode, (data) => {
-      setSessionData(data);
+      setSessionData((prev) => ({
+        session_code: data.session_code || prev?.session_code || sessionCode,
+        submissions: data.submissions.length ? data.submissions : prev?.submissions || [],
+        results: data.results.length ? data.results : prev?.results || [],
+        showResults: typeof data.showResults === 'boolean' ? data.showResults : prev?.showResults,
+      } as SessionData));
     });
 
     return () => unsubscribe();
@@ -112,50 +117,61 @@ const ResultsPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Graph */}
+          {/* Graph (collapsible) */}
           <div className="bg-white rounded-2xl shadow-xl p-6 overflow-visible">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">
-              Session Results
-            </h2>
-            <SocialStyleGraph
-              results={sessionData?.results || []}
-              submissions={sessionData?.submissions || []}
-              currentUserResult={result}
-              currentUserName={name}
-            />
+            <h2 className="text-xl font-bold text-gray-900 mb-2">Session Results</h2>
+            <div
+              className={`transition-all duration-500 ease-in-out overflow-hidden ${
+                sessionData?.showResults ? "max-h-[1200px] opacity-100" : "max-h-0 opacity-0"
+              }`}
+              aria-hidden={!sessionData?.showResults}
+            >
+              <div className="pt-4">
+                <SocialStyleGraph
+                  results={sessionData?.results || []}
+                  submissions={sessionData?.submissions || []}
+                  currentUserResult={result}
+                  currentUserName={name}
+                />
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Participants List */}
-        {sessionData && (
-          <div className="bg-white rounded-2xl shadow-xl p-6 mt-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">
-              Participants ({sessionData.submissions.length})
-            </h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {sessionData.submissions.map((submission: Submission, index: number) => {
-                const subResult = sessionData.results[index];
-                return (
-                  <div
-                    key={submission.id}
-                    className="bg-gray-50 p-4 rounded-lg"
-                  >
-                    <div className="font-medium text-gray-900">
-                      {submission.name}
+        {/* Participants List (collapsible) */}
+        <div className="bg-white rounded-2xl shadow-xl p-6 mt-6">
+          <h2 className="text-xl font-bold text-gray-900 mb-2">
+            Participants ({sessionData?.submissions.length || 0})
+          </h2>
+          <div
+            className={`transition-all duration-500 ease-in-out overflow-hidden ${
+              sessionData?.showResults && sessionData && sessionData.submissions.length > 0
+                ? "max-h-[1200px] opacity-100"
+                : "max-h-0 opacity-0"
+            }`}
+            aria-hidden={!(sessionData?.showResults && !!(sessionData && sessionData.submissions.length > 0))}
+          >
+            <div className="pt-4 grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {sessionData &&
+                sessionData.submissions.map((submission: Submission, index: number) => {
+                  const subResult = sessionData.results[index];
+                  return (
+                    <div
+                      key={submission.id}
+                      className="bg-gray-50 p-4 rounded-lg"
+                    >
+                      <div className="font-medium text-gray-900">
+                        {submission.name}
+                      </div>
+                      <div className="text-sm text-brand-600">
+                        {subResult.socialStyle}
+                      </div>
                     </div>
-                    <div className="text-sm text-brand-600">
-                      {subResult.socialStyle}
-                    </div>
-                    {/* <div className="text-xs text-gray-500 mt-1">
-                      Tell :{subResult.firstHalf.a} B:{subResult.firstHalf.b} | C:
-                      {subResult.secondHalf.c} D:{subResult.secondHalf.d}
-                    </div> */}
-                  </div>
-                );
-              })}
+                  );
+                })}
             </div>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

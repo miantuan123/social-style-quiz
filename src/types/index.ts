@@ -33,4 +33,5 @@ export interface SessionData {
   session_code: string;
   submissions: Submission[];
   results: QuizResult[];
+  showResults?: boolean;
 } 

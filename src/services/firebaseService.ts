@@ -7,6 +7,7 @@ import {
   doc,
   getDoc,
   setDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "../lib/firebase";
 import type { Submission, SessionData } from "../types/index";
@@ -60,9 +61,9 @@ export function subscribeToSession(
     where("session_code", "==", sessionCode)
   );
 
-  return onSnapshot(
+  const unsubSubmissions = onSnapshot(
     q,
-    (snapshot) => {
+    async (snapshot) => {
       console.log(
         `Session ${sessionCode}: Received ${snapshot.size} documents`
       );
@@ -90,10 +91,18 @@ export function subscribeToSession(
         calculateQuizResult(sub.questions_answers)
       );
 
+      // read showResults from sessions doc
+      const sessionRef = doc(db, "sessions", sessionCode);
+      const sessionSnap = await getDoc(sessionRef);
+      const showResults = sessionSnap.exists()
+        ? Boolean((sessionSnap.data() as any).showResults)
+        : false;
+
       const sessionData: SessionData = {
         session_code: sessionCode,
         submissions,
         results,
+        showResults,
       };
 
       console.log(
@@ -105,13 +114,49 @@ export function subscribeToSession(
       console.error("Error listening to session:", error);
     }
   );
+
+  // Also listen to the session doc for showResults changes
+  const sessionDocRef = doc(db, "sessions", sessionCode);
+  const unsubSession = onSnapshot(sessionDocRef, (snap) => {
+    if (!snap.exists()) return;
+    const data = snap.data();
+    // Fire a lightweight callback to update showResults only
+    callback({
+      session_code: sessionCode,
+      submissions: [],
+      results: [],
+      showResults: Boolean((data as any).showResults),
+    });
+  });
+
+  return () => {
+    unsubSubmissions();
+    unsubSession();
+  };
 }
 
 export async function createSession(sessionCode: string): Promise<void> {
   const sessionRef = doc(db, "sessions", sessionCode);
   await setDoc(sessionRef, {
-    session_code: sessionCode
+    session_code: sessionCode,
+    showResults: false,
   });
+}
+
+export async function setSessionShowResults(
+  sessionCode: string,
+  show: boolean
+): Promise<void> {
+  const sessionRef = doc(db, "sessions", sessionCode);
+  await updateDoc(sessionRef, { showResults: show });
+}
+
+export async function getSessionShowResults(
+  sessionCode: string
+): Promise<boolean> {
+  const sessionRef = doc(db, "sessions", sessionCode);
+  const snap = await getDoc(sessionRef);
+  return Boolean(snap.exists() && (snap.data() as any).showResults);
 }
 
 // export async function getSession(sessionCode: string): Promise<Session | null> {

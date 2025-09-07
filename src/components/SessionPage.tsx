@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { subscribeToSession } from "../services/firebaseService";
+import { subscribeToSession, setSessionShowResults } from "../services/firebaseService";
 import type { SessionData, Submission } from "../types/index";
 import { Home } from "lucide-react";
 import SocialStyleGraph from "./SocialStyleGraph";
@@ -12,6 +12,7 @@ const SessionPage: React.FC = () => {
   const qrCodeRef = useRef<HTMLCanvasElement>(null);
 
   const [sessionData, setSessionData] = useState<SessionData | null>(null);
+  const [showResults, setShowResults] = useState<boolean>(false);
 
 
   useEffect(() => {
@@ -26,7 +27,16 @@ const SessionPage: React.FC = () => {
         `SessionPage received data for session ${sessionCode}:`,
         data
       );
-      setSessionData(data);
+      // Merge showResults flag when we receive a lightweight update
+      setSessionData((prev) => ({
+        session_code: data.session_code || prev?.session_code || sessionCode,
+        submissions: data.submissions.length ? data.submissions : prev?.submissions || [],
+        results: data.results.length ? data.results : prev?.results || [],
+        showResults: typeof data.showResults === 'boolean' ? data.showResults : prev?.showResults,
+      } as SessionData));
+      if (typeof data.showResults === 'boolean') {
+        setShowResults(data.showResults);
+      }
     });
 
     return () => unsubscribe();
@@ -69,6 +79,18 @@ const SessionPage: React.FC = () => {
             Session Results
           </h1>
           <div className="flex space-x-3 mb-6">
+            <button
+              onClick={async () => {
+                const next = !showResults;
+                setShowResults(next);
+                if (sessionCode) {
+                  try { await setSessionShowResults(sessionCode, next); } catch (e) { console.error(e); }
+                }
+              }}
+              className="flex items-center px-4 py-2 !bg-brand-500 text-white rounded-lg hover:!bg-brand-700 transition-colors"
+            >
+              {showResults ? "Hide Results" : "Show Results"}
+            </button>
 
             <button
               onClick={() => navigate("/")}
@@ -102,45 +124,60 @@ const SessionPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Live Results Graph */}
+        {/* Live Results Graph (collapsible) */}
         <div className="bg-white rounded-2xl shadow-xl p-6 mb-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Live Results</h2>
-          <SocialStyleGraph
-            results={sessionData?.results || []}
-            submissions={sessionData?.submissions || []}
-          />
+          <h2 className="text-xl font-bold text-gray-900 mb-2">Live Results</h2>
+          <div
+            id="live-results"
+            className={`transition-all duration-500 ease-in-out overflow-hidden ${
+              showResults ? "max-h-[1200px] opacity-100" : "max-h-0 opacity-0"
+            }`}
+            aria-hidden={!showResults}
+          >
+            <div className="pt-4">
+              <SocialStyleGraph
+                results={sessionData?.results || []}
+                submissions={sessionData?.submissions || []}
+              />
+            </div>
+          </div>
         </div>
 
         {/* Participants List */}
-        {sessionData && sessionData.submissions.length > 0 && (
-          <div className="bg-white rounded-2xl shadow-xl p-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">
-              Participants ({sessionData.submissions.length})
-            </h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {sessionData.submissions.map((submission: Submission, index: number) => {
-                const subResult = sessionData.results[index];
-                return (
-                  <div
-                    key={submission.id}
-                    className="bg-gray-50 p-4 rounded-lg"
-                  >
-                    <div className="font-medium text-gray-900">
-                      {submission.name}
+        {/* Participants (collapsible) */}
+        <div className="bg-white rounded-2xl shadow-xl p-6">
+          <h2 className="text-xl font-bold text-gray-900 mb-2">
+            Participants ({sessionData?.submissions.length || 0})
+          </h2>
+          <div
+            className={`transition-all duration-500 ease-in-out overflow-hidden ${
+              showResults && sessionData && sessionData.submissions.length > 0
+                ? "max-h-[1200px] opacity-100"
+                : "max-h-0 opacity-0"
+            }`}
+            aria-hidden={!(showResults && !!(sessionData && sessionData.submissions.length > 0))}
+          >
+            <div className="pt-4 grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {sessionData &&
+                sessionData.submissions.map((submission: Submission, index: number) => {
+                  const subResult = sessionData.results[index];
+                  return (
+                    <div
+                      key={submission.id}
+                      className="bg-gray-50 p-4 rounded-lg"
+                    >
+                      <div className="font-medium text-gray-900">
+                        {submission.name}
+                      </div>
+                      <div className="text-sm text-brand-600">
+                        {subResult.socialStyle}
+                      </div>
                     </div>
-                    <div className="text-sm text-brand-600">
-                      {subResult.socialStyle}
-                    </div>
-                    {/* <div className="text-xs text-gray-500 mt-1">
-                      A:{subResult.firstHalf.a} B:{subResult.firstHalf.b} | C:
-                      {subResult.secondHalf.c} D:{subResult.secondHalf.d}
-                    </div> */}
-                  </div>
-                );
-              })}
+                  );
+                })}
             </div>
           </div>
-        )}
+        </div>
       </div>
 
 
