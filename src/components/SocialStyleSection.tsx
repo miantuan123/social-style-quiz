@@ -12,6 +12,7 @@ interface SocialStyleSectionProps {
   isExpanded: boolean;
   onToggle: () => void;
   showToggle?: boolean;
+  centerContent?: boolean;
 }
 
 const SocialStyleSection: React.FC<SocialStyleSectionProps> = ({
@@ -21,6 +22,7 @@ const SocialStyleSection: React.FC<SocialStyleSectionProps> = ({
   isExpanded,
   onToggle,
   showToggle = true,
+  centerContent = false,
 }) => {
   const filteredResults = results.filter(r => r.socialStyle === styleName);
   const filteredSubmissions = submissions.filter((_, i) => 
@@ -53,7 +55,7 @@ const SocialStyleSection: React.FC<SocialStyleSectionProps> = ({
         }`}
         aria-hidden={!isExpanded}
       >
-        <div className="pt-4">
+        <div className={`pt-4 ${centerContent ? 'mx-auto max-w-[640px]' : ''}`}>
           {styleName === 'Driver' && (
             <DriverGraph results={filteredResults} submissions={filteredSubmissions} />
           )}
@@ -65,6 +67,24 @@ const SocialStyleSection: React.FC<SocialStyleSectionProps> = ({
           )}
           {styleName === 'Amiable' && (
             <AmiableGraph results={filteredResults} submissions={filteredSubmissions} />
+          )}
+        </div>
+        {/* Participants under this style */}
+        <div className="pt-6">
+          <h4 className="text-md font-semibold text-gray-900 mb-3">
+            Participants ({filteredSubmissions.length})
+          </h4>
+          {filteredSubmissions.length === 0 ? (
+            <div className="text-sm text-gray-500">No participants for this style yet</div>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+              {filteredSubmissions.map((submission, index) => (
+                <div key={submission.id} className="bg-gray-50 p-3 rounded-lg">
+                  <div className="font-medium text-gray-900">{submission.name}</div>
+                  <div className="text-xs text-brand-600">{filteredResults[index]?.socialStyle}</div>
+                </div>
+              ))}
+            </div>
           )}
         </div>
       </div>

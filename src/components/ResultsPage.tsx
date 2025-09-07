@@ -58,7 +58,7 @@ const ResultsPage: React.FC = () => {
 
   return (
     <div className="min-h-screen p-4">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="bg-white rounded-2xl shadow-xl p-6 mb-6">
           <div className="flex justify-between items-center">
@@ -142,9 +142,9 @@ const ResultsPage: React.FC = () => {
             </div>
           </div>
           
-          {/* Social Style Sections */}
-          <div className="space-y-4">
-            <SocialStyleSection
+        </div>
+        <div className="grid lg:grid-cols-2 gap-6 mt-6">
+        <SocialStyleSection
                 styleName="Driver"
                 results={sessionData?.results || []}
                 submissions={sessionData?.submissions || []}
@@ -160,7 +160,9 @@ const ResultsPage: React.FC = () => {
                 onToggle={() => {}}
                 showToggle={false}
               />
-            <SocialStyleSection
+        </div>
+        <div className="grid lg:grid-cols-2 gap-6">
+        <SocialStyleSection
                 styleName="Analyser"
                 results={sessionData?.results || []}
                 submissions={sessionData?.submissions || []}
@@ -176,7 +178,6 @@ const ResultsPage: React.FC = () => {
                 onToggle={() => {}}
                 showToggle={false}
               />
-          </div>
         </div>
 
         {/* Participants List (collapsible) */}

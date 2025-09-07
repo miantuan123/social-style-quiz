@@ -131,7 +131,7 @@ const SessionPage: React.FC = () => {
 
         {/* Global Live Results Graph (collapsible) */}
         <div className="bg-white rounded-2xl shadow-xl p-6 mb-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-2">Live Results</h2>
+          <h2 className="text-xl font-bold text-gray-900 mb-2">Overall Results</h2>
           <div
             id="live-results"
             className={`transition-all duration-500 ease-in-out overflow-hidden ${
@@ -148,56 +148,7 @@ const SessionPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Social Style Sections */}
-        <div className="space-y-4">
-          <SocialStyleSection
-            styleName="Driver"
-            results={sessionData?.results || []}
-            submissions={sessionData?.submissions || []}
-            isExpanded={sessionData?.showDriver || false}
-            onToggle={async () => {
-              if (sessionCode) {
-                try { await setSessionShowStyle(sessionCode, 'Driver', !(sessionData?.showDriver)); } catch (e) { console.error(e); }
-              }
-            }}
-          />
-          <SocialStyleSection
-            styleName="Expressive"
-            results={sessionData?.results || []}
-            submissions={sessionData?.submissions || []}
-            isExpanded={sessionData?.showExpressive || false}
-            onToggle={async () => {
-              if (sessionCode) {
-                try { await setSessionShowStyle(sessionCode, 'Expressive', !(sessionData?.showExpressive)); } catch (e) { console.error(e); }
-              }
-            }}
-          />
-          <SocialStyleSection
-            styleName="Analyser"
-            results={sessionData?.results || []}
-            submissions={sessionData?.submissions || []}
-            isExpanded={sessionData?.showAnalyser || false}
-            onToggle={async () => {
-              if (sessionCode) {
-                try { await setSessionShowStyle(sessionCode, 'Analyser', !(sessionData?.showAnalyser)); } catch (e) { console.error(e); }
-              }
-            }}
-          />
-          <SocialStyleSection
-            styleName="Amiable"
-            results={sessionData?.results || []}
-            submissions={sessionData?.submissions || []}
-            isExpanded={sessionData?.showAmiable || false}
-            onToggle={async () => {
-              if (sessionCode) {
-                try { await setSessionShowStyle(sessionCode, 'Amiable', !(sessionData?.showAmiable)); } catch (e) { console.error(e); }
-              }
-            }}
-          />
-        </div>
-
         {/* Participants List */}
-        {/* Participants (collapsible) */}
         <div className="bg-white rounded-2xl shadow-xl p-6">
           <h2 className="text-xl font-bold text-gray-900 mb-2">
             Participants ({sessionData?.submissions.length || 0})
@@ -230,6 +181,58 @@ const SessionPage: React.FC = () => {
                 })}
             </div>
           </div>
+        </div>
+
+        {/* Social Style Sections */}
+        <div className="space-y-4 mt-6">
+          <SocialStyleSection
+            styleName="Driver"
+            results={sessionData?.results || []}
+            submissions={sessionData?.submissions || []}
+            isExpanded={sessionData?.showDriver || false}
+            onToggle={async () => {
+              if (sessionCode) {
+                try { await setSessionShowStyle(sessionCode, 'Driver', !(sessionData?.showDriver)); } catch (e) { console.error(e); }
+              }
+            }}
+            centerContent
+          />
+          <SocialStyleSection
+            styleName="Expressive"
+            results={sessionData?.results || []}
+            submissions={sessionData?.submissions || []}
+            isExpanded={sessionData?.showExpressive || false}
+            onToggle={async () => {
+              if (sessionCode) {
+                try { await setSessionShowStyle(sessionCode, 'Expressive', !(sessionData?.showExpressive)); } catch (e) { console.error(e); }
+              }
+            }}
+            centerContent
+          />
+          <SocialStyleSection
+            styleName="Analyser"
+            results={sessionData?.results || []}
+            submissions={sessionData?.submissions || []}
+            isExpanded={sessionData?.showAnalyser || false}
+            onToggle={async () => {
+              if (sessionCode) {
+                try { await setSessionShowStyle(sessionCode, 'Analyser', !(sessionData?.showAnalyser)); } catch (e) { console.error(e); }
+              }
+            }}
+            centerContent
+          />
+          <SocialStyleSection
+            styleName="Amiable"
+            results={sessionData?.results || []}
+            submissions={sessionData?.submissions || []}
+            isExpanded={sessionData?.showAmiable || false}
+            onToggle={async () => {
+              if (sessionCode) {
+                try { await setSessionShowStyle(sessionCode, 'Amiable', !(sessionData?.showAmiable)); } catch (e) { console.error(e); }
+              }
+            }}
+            centerContent
+          />
         </div>
       </div>
 
