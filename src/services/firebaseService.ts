@@ -94,15 +94,21 @@ export function subscribeToSession(
       // read showResults from sessions doc
       const sessionRef = doc(db, "sessions", sessionCode);
       const sessionSnap = await getDoc(sessionRef);
-      const showResults = sessionSnap.exists()
-        ? Boolean((sessionSnap.data() as any).showResults)
-        : false;
+      const showResults = sessionSnap.exists() ? Boolean((sessionSnap.data() as any).showResults) : false;
+      const showDriver = sessionSnap.exists() ? Boolean((sessionSnap.data() as any).showDriver) : false;
+      const showExpressive = sessionSnap.exists() ? Boolean((sessionSnap.data() as any).showExpressive) : false;
+      const showAnalyser = sessionSnap.exists() ? Boolean((sessionSnap.data() as any).showAnalyser) : false;
+      const showAmiable = sessionSnap.exists() ? Boolean((sessionSnap.data() as any).showAmiable) : false;
 
       const sessionData: SessionData = {
         session_code: sessionCode,
         submissions,
         results,
         showResults,
+        showDriver,
+        showExpressive,
+        showAnalyser,
+        showAmiable,
       };
 
       console.log(
@@ -126,6 +132,10 @@ export function subscribeToSession(
       submissions: [],
       results: [],
       showResults: Boolean((data as any).showResults),
+      showDriver: Boolean((data as any).showDriver),
+      showExpressive: Boolean((data as any).showExpressive),
+      showAnalyser: Boolean((data as any).showAnalyser),
+      showAmiable: Boolean((data as any).showAmiable),
     });
   });
 
@@ -140,12 +150,16 @@ export async function createSession(sessionCode: string): Promise<void> {
   await setDoc(sessionRef, {
     session_code: sessionCode,
     showResults: false,
+    showDriver: false,
+    showExpressive: false,
+    showAnalyser: false,
+    showAmiable: false,
   });
 }
 
 export async function setSessionShowResults(
   sessionCode: string,
-  show: boolean
+  show: boolean,
 ): Promise<void> {
   const sessionRef = doc(db, "sessions", sessionCode);
   await updateDoc(sessionRef, { showResults: show });
@@ -157,6 +171,21 @@ export async function getSessionShowResults(
   const sessionRef = doc(db, "sessions", sessionCode);
   const snap = await getDoc(sessionRef);
   return Boolean(snap.exists() && (snap.data() as any).showResults);
+}
+
+export async function setSessionShowStyle(
+  sessionCode: string,
+  style: 'Driver' | 'Expressive' | 'Analyser' | 'Amiable',
+  show: boolean
+): Promise<void> {
+  const fieldMap: Record<string, string> = {
+    Driver: 'showDriver',
+    Expressive: 'showExpressive',
+    Analyser: 'showAnalyser',
+    Amiable: 'showAmiable',
+  };
+  const sessionRef = doc(db, "sessions", sessionCode);
+  await updateDoc(sessionRef, { [fieldMap[style]]: show } as any);
 }
 
 // export async function getSession(sessionCode: string): Promise<Session | null> {

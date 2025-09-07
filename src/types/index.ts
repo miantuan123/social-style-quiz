@@ -34,4 +34,8 @@ export interface SessionData {
   submissions: Submission[];
   results: QuizResult[];
   showResults?: boolean;
-} 
+  showDriver?: boolean;
+  showExpressive?: boolean;
+  showAnalyser?: boolean;
+  showAmiable?: boolean;
+}

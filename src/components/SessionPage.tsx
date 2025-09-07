@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { subscribeToSession, setSessionShowResults } from "../services/firebaseService";
+import { subscribeToSession, setSessionShowResults, setSessionShowStyle } from "../services/firebaseService";
 import type { SessionData, Submission } from "../types/index";
 import { Home } from "lucide-react";
+import SocialStyleSection from "./SocialStyleSection";
 import SocialStyleGraph from "./SocialStyleGraph";
 import QRCode from "qrcode";
 
@@ -33,6 +34,10 @@ const SessionPage: React.FC = () => {
         submissions: data.submissions.length ? data.submissions : prev?.submissions || [],
         results: data.results.length ? data.results : prev?.results || [],
         showResults: typeof data.showResults === 'boolean' ? data.showResults : prev?.showResults,
+        showDriver: typeof (data as any).showDriver === 'boolean' ? (data as any).showDriver : prev?.showDriver,
+        showExpressive: typeof (data as any).showExpressive === 'boolean' ? (data as any).showExpressive : prev?.showExpressive,
+        showAnalyser: typeof (data as any).showAnalyser === 'boolean' ? (data as any).showAnalyser : prev?.showAnalyser,
+        showAmiable: typeof (data as any).showAmiable === 'boolean' ? (data as any).showAmiable : prev?.showAmiable,
       } as SessionData));
       if (typeof data.showResults === 'boolean') {
         setShowResults(data.showResults);
@@ -124,7 +129,7 @@ const SessionPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Live Results Graph (collapsible) */}
+        {/* Global Live Results Graph (collapsible) */}
         <div className="bg-white rounded-2xl shadow-xl p-6 mb-6">
           <h2 className="text-xl font-bold text-gray-900 mb-2">Live Results</h2>
           <div
@@ -141,6 +146,54 @@ const SessionPage: React.FC = () => {
               />
             </div>
           </div>
+        </div>
+
+        {/* Social Style Sections */}
+        <div className="space-y-4">
+          <SocialStyleSection
+            styleName="Driver"
+            results={sessionData?.results || []}
+            submissions={sessionData?.submissions || []}
+            isExpanded={sessionData?.showDriver || false}
+            onToggle={async () => {
+              if (sessionCode) {
+                try { await setSessionShowStyle(sessionCode, 'Driver', !(sessionData?.showDriver)); } catch (e) { console.error(e); }
+              }
+            }}
+          />
+          <SocialStyleSection
+            styleName="Expressive"
+            results={sessionData?.results || []}
+            submissions={sessionData?.submissions || []}
+            isExpanded={sessionData?.showExpressive || false}
+            onToggle={async () => {
+              if (sessionCode) {
+                try { await setSessionShowStyle(sessionCode, 'Expressive', !(sessionData?.showExpressive)); } catch (e) { console.error(e); }
+              }
+            }}
+          />
+          <SocialStyleSection
+            styleName="Analyser"
+            results={sessionData?.results || []}
+            submissions={sessionData?.submissions || []}
+            isExpanded={sessionData?.showAnalyser || false}
+            onToggle={async () => {
+              if (sessionCode) {
+                try { await setSessionShowStyle(sessionCode, 'Analyser', !(sessionData?.showAnalyser)); } catch (e) { console.error(e); }
+              }
+            }}
+          />
+          <SocialStyleSection
+            styleName="Amiable"
+            results={sessionData?.results || []}
+            submissions={sessionData?.submissions || []}
+            isExpanded={sessionData?.showAmiable || false}
+            onToggle={async () => {
+              if (sessionCode) {
+                try { await setSessionShowStyle(sessionCode, 'Amiable', !(sessionData?.showAmiable)); } catch (e) { console.error(e); }
+              }
+            }}
+          />
         </div>
 
         {/* Participants List */}

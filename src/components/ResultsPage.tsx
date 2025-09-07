@@ -4,6 +4,7 @@ import { subscribeToSession } from "../services/firebaseService";
 import type { SessionData, Submission } from "../types/index";
 import { Home } from "lucide-react"; // Added Info icon
 import SocialStyleGraph from "./SocialStyleGraph";
+import SocialStyleSection from "./SocialStyleSection";
 
 const ResultsPage: React.FC = () => {
   const { submissionId } = useParams<{ submissionId: string }>();
@@ -25,6 +26,10 @@ const ResultsPage: React.FC = () => {
         submissions: data.submissions.length ? data.submissions : prev?.submissions || [],
         results: data.results.length ? data.results : prev?.results || [],
         showResults: typeof data.showResults === 'boolean' ? data.showResults : prev?.showResults,
+        showDriver: typeof (data as any).showDriver === 'boolean' ? (data as any).showDriver : prev?.showDriver,
+        showExpressive: typeof (data as any).showExpressive === 'boolean' ? (data as any).showExpressive : prev?.showExpressive,
+        showAnalyser: typeof (data as any).showAnalyser === 'boolean' ? (data as any).showAnalyser : prev?.showAnalyser,
+        showAmiable: typeof (data as any).showAmiable === 'boolean' ? (data as any).showAmiable : prev?.showAmiable,
       } as SessionData));
     });
 
@@ -135,6 +140,42 @@ const ResultsPage: React.FC = () => {
                 />
               </div>
             </div>
+          </div>
+          
+          {/* Social Style Sections */}
+          <div className="space-y-4">
+            <SocialStyleSection
+                styleName="Driver"
+                results={sessionData?.results || []}
+                submissions={sessionData?.submissions || []}
+                isExpanded={sessionData?.showDriver || false}
+                onToggle={() => {}}
+                showToggle={false}
+              />
+            <SocialStyleSection
+                styleName="Expressive"
+                results={sessionData?.results || []}
+                submissions={sessionData?.submissions || []}
+                isExpanded={sessionData?.showExpressive || false}
+                onToggle={() => {}}
+                showToggle={false}
+              />
+            <SocialStyleSection
+                styleName="Analyser"
+                results={sessionData?.results || []}
+                submissions={sessionData?.submissions || []}
+                isExpanded={sessionData?.showAnalyser || false}
+                onToggle={() => {}}
+                showToggle={false}
+              />
+            <SocialStyleSection
+                styleName="Amiable"
+                results={sessionData?.results || []}
+                submissions={sessionData?.submissions || []}
+                isExpanded={sessionData?.showAmiable || false}
+                onToggle={() => {}}
+                showToggle={false}
+              />
           </div>
         </div>
 
